@@ -1,0 +1,3 @@
+var Test = {
+		type: 'test'
+};
