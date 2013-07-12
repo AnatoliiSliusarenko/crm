@@ -13,8 +13,7 @@ var App = App ||
 		loginForm: "loginForm"
 	},
 	Pages: {
-		login: "core/html/login.html",
-		main: "core/html/main.html"
+		login: "core/html/login.html"
 	},
 	Classes: {},
 	Libs: {

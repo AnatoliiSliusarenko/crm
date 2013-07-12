@@ -1,12 +1,17 @@
 define(function(){
-	var loadContent = function(destID, resURL, resID, callback){
-		$("#" + destID).empty();
-		$("#" + destID).load(resURL + " #" + resID, callback);
-	};
-	
 	return {
 		topMenu: [], 
 		leftMenu: [],
+		loadContent: function(destID, resURL, resID, callback){
+			$("#" + destID).empty();
+			$("#" + destID).load(resURL + " #" + resID, callback);
+		},
+		hideContent: function(){
+			$("#" + App.ID.contentHolder).fadeOut("normal");
+		},
+		showContent: function(){
+			$("#" + App.ID.contentHolder).fadeIn("normal");
+		},
 		initLoginPage: function(){
 			$("#" + App.ID.loginForm).submit(function(){
 				var login = $(this).find("#login").val(),
@@ -15,17 +20,49 @@ define(function(){
 				App.Modules.Communication.login(login, password);
 				return false;
 			});
+			
+			//App.Modules.UI.showContent();
+		},
+		showLoginAnswer: function(message){
+			$("#" + App.ID.loginForm + " #response").empty().append(message);
 		},
 		showLoginPage: function(){
-			//change hidden class to topMenu, leftMenu
+			//this.hideContent();
+			this.hideLeftMenu();
+			this.hideTopMenu();
+			
 			//change class of content
-			loadContent(App.ID.contentHolder, App.Pages.login, App.ID.loginContent, this.initLoginPage);
+			this.loadContent(App.ID.contentHolder, App.Pages.login, App.ID.loginContent, this.initLoginPage);
 		},
 		showMainPage: function(){
 			//change visible class to topMenu, leftMenu
 			//change class of content
+			this.createTopMenu();
+			this.showTopMenu();
 			
-			loadContent(App.ID.contentHolder, App.Pages.main, App.ID.contentHolder);
+			this.createLeftMenu();
+			this.showLeftMenu();
+			
+			this.hideContent();
+			
+		},
+		createTopMenu: function(){
+			
+		},
+		createLeftMenu: function(){
+			
+		},
+		showTopMenu: function(){
+			
+		},
+		showLeftMenu: function(){
+			
+		},
+		hideTopMenu: function(){
+			
+		},
+		hideLeftMenu: function(){
+			
 		}
 	}
 });
