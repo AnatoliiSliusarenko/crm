@@ -1,5 +1,108 @@
 @CHARSET "UTF-8";
-
+@font-face {
+	font-family: 'Segoe UI';
+	/* IE8 HACK: объявление EOT должно идти первым, содержать ?# и заключено в единичные кавычки */
+	src:/* url("../fonts/segoeui.eot?#iefix") format('embedded-opentype'),
+		local('Segoe UI'),*/
+		url("../fonts/segoeui.woff") format('woff')/*,
+		url("../fonts/segoeui.ttf") format('truetype'),
+		url("../fonts/segoeui.svg#SegoeUI") format('svg')*/;
+}
+@font-face {
+	font-family: 'Segoe UI Light';
+	src: /*url("../fonts/segoeuil.eot?#iefix") format('embedded-opentype'),
+		local('Segoe UI Light'),*/
+		url("../fonts/segoeuil.woff") format('woff')/*,
+		url("../fonts/segoeuil.ttf") format('truetype'),
+		url("../fonts/segoeuil.svg#SegoeUI-Light") format('svg')*/;
+}
 body {
+	font-family: "Segoe UI";
 	background-color: #999999;
+}
+ul{
+  margin:0px;
+  padding-left:25px;
+}
+li{
+  margin:0;
+}
+#topmenu-holder nav ul li{
+height: 27px;
+color: #fff;
+padding-left: 13px;
+line-height: 27px;
+overflow: hidden;
+float:left;
+position: relative;
+cursor: default;
+border-bottom: 3px solid #4d5a75;
+padding-right: 10px;
+cursor: pointer;
+}
+#topmenu-holder nav ul li a{
+color:#fff;
+text-decoration:none;
+display:block;
+width:100%;
+height:100%;
+font-size:12px;
+}
+#topmenu-holder nav ul li.selected{
+ border-bottom: 3px solid #a0b6e5;
+ background-color:#444f67;
+}
+#topmenu-holder nav ul li a:hover{
+/*   text-decoration:underline; */
+}
+
+#topmenu-holder nav ul{
+  margin:0;
+  display: block;
+  height: 30px;
+  padding-left: 0;
+}
+#topmenu-holder{
+  display:block;
+  float:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height: 30px;
+  background:#4d5a75;
+  padding:0px;
+  margin:0;
+}
+#leftmenu-holder{
+  display:block;
+  position:fixed;
+  top:30px;
+  left:0;
+  width:200px;
+  background:#fff;
+  height:100%;
+}
+#leftmenu-holder nav ul:first-child {
+  margin-top:10px;
+}
+#leftmenu-holder nav ul li a{
+  color:#2da7E4;
+}
+#leftmenu-holder nav ul li a:hover{
+  color:#4d67E4;
+}
+#content-holder{
+  display:block;
+  width:auto;
+  margin-top:30px;
+  margin-left:200px;
+  
+}
+#loginForm{
+  display:block;
+  width:180px;
+  margin:350px auto;
+  background:#fff;
+  padding:20px 30px;
 }
