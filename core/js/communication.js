@@ -35,7 +35,7 @@ define(function(){
 				}
 			});
 		},
-		checkHash: function(){
+		checkHash: function(){	
 			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
 			
@@ -44,7 +44,7 @@ define(function(){
 				App.Modules.UI.initLoginPage();
 				return;
 			}
-			
+		
 			this.socket.emit('checkHash', {"hash": hash, "uid": uid});
 			this.socket.on('responseCheckHash', function(response){
             	switch(response.result.status)
@@ -67,6 +67,14 @@ define(function(){
             });
 		},
 		createUser: function(data){
+			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+		
+			if ((hash == false) || (uid == false)) 
+			{
+				App.Modules.UI.initLoginPage();
+				return;
+			}
 			/*var data = {};
             data['ulogin'] = 'vika';
             data['upass'] = '12345';
@@ -83,6 +91,21 @@ define(function(){
             	debugger
             	console.log('responseCreateUser ANSWER')
             });
+		},
+		getModules: function(){
+			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+		
+			if ((hash == false) || (uid == false)) 
+			{
+				App.Modules.UI.initLoginPage();
+				return;
+			}
+			
+			this.socket.emit('getModules', {"hash": hash, "uid": uid});
+			this.socket.on('responseGetModules', function(response){
+				debugger
+			});
 		}
 	}
 });

@@ -1,7 +1,6 @@
 define(function(){
 	return {
-		topMenu: [], 
-		leftMenu: [],
+		modulesMenu: [],
 		loadContent: function(destID, resURL, resID, callback){
 			$("#" + destID).empty();
 			$("#" + destID).load(resURL + " #" + resID, callback);
@@ -16,21 +15,14 @@ define(function(){
 					return false;
 				});
 			});
-			
-			
-			
-			
 		},
 		showLoginAnswer: function(message){
 			$("#" + App.ID.loginForm + " #response").empty().append(message);
 		},
 		initMainPage: function(){
-			this.loadContent(App.ID.pageHolder, App.Pages.main, App.ID.contentResource, function(){
-				// load menu
+			this.loadContent(App.ID.pageHolder, App.Pages.main, App.ID.contentResource, function(){	
+				App.Modules.Communication.getModules();
 			});
-			
-			
-			
 		}
 	}
 });
