@@ -2,18 +2,19 @@
 var App = App || 
 {
 	Server: {
-		ip: "192.168.88.45",
-		port: "8080"
+		ip: "192.168.88.109",
+		port: "8088"
 	},
 	ID: {
 		topMenu: "topmenu-holder",
 		leftMenu: "leftmenu-holder",
-		contentHolder: "content-holder",
-		loginContent: "loginContent",
+		pageHolder: "body",
+		contentResource: "wrapper",
 		loginForm: "loginForm"
 	},
 	Pages: {
-		login: "core/html/login.html"
+		login: "core/html/login.html",
+		main: "core/html/main.html"
 	},
 	Classes: {},
 	Libs: {
@@ -24,7 +25,7 @@ var App = App ||
 		LocalStorage: {},
 		Communication: {}
 	},
-	Init: function(){
+	InitApp: function(){
 		this.Modules.Communication.initConnection();
 		this.Modules.Communication.checkHash();
 	}
@@ -43,5 +44,5 @@ requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "commun
 	
 	
 	
-	App.Init();
+	App.InitApp();
 });

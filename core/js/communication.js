@@ -6,21 +6,28 @@ define(function(){
 			this.socket.on('connect', function(){
 				console.log('Server connected...');
 			});
+			this.socket.on('disconnect', function(){
+				console.log('Server disconnected...');
+			});
 		},
 		login: function(login, password){
-			
 			this.socket.emit('login', {"ulogin": login, "upass": password});
 			this.socket.on('responseLogin', function(response){
-		
-				switch(response.Result.Status)
+				switch(response.result.status)
 				{
 					case "0": 
 					{
-						App.Modules.UI.showMainPage();
+						console.log('responseLogin OK');
+						App.Modules.LocalStorage.saveToLocalStorage("hash", response.data.hash);
+						App.Modules.LocalStorage.saveToLocalStorage("uid", response.data.uid);
+						
+						App.Modules.UI.initMainPage();
 						break;
 					}
-					case "3": 
+					default: 
 					{
+						console.log('responseLogin BAD');
+						
 						App.Modules.UI.showLoginAnswer("Incorrect login or password");
 						break;
 					}
@@ -29,29 +36,52 @@ define(function(){
 			});
 		},
 		checkHash: function(){
-			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash");
+			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
 			
-			if (hash == false)
+			if ((hash == false) || (uid == false)) 
 			{
-				App.Modules.UI.showLoginPage();
+				App.Modules.UI.initLoginPage();
 				return;
 			}
 			
-			this.socket.emit('checkHash', {"hash": hash});
-			this.socket.on('checkHash', function(response){
-            	switch(response.result)
+			this.socket.emit('checkHash', {"hash": hash, "uid": uid});
+			this.socket.on('responseCheckHash', function(response){
+            	switch(response.result.status)
             	{
             		case "0":
             		{
-            			App.Modules.UI.showMainPage();
+            			console.log('checkHash OK');
+            			
+            			App.Modules.UI.initMainPage();
             			break;
             		}
-            		case "2":
+            		default:
             		{
-            			App.Modules.UI.showLoginPage();
+            			console.log('checkHash BAD');
+            			
+            			App.Modules.UI.initLoginPage();
             			break;
             		}
             	}
+            });
+		},
+		createUser: function(data){
+			/*var data = {};
+            data['ulogin'] = 'vika';
+            data['upass'] = '12345';
+            data['uemail'] = 'vika@dghhfg.com';
+            data['uname'] = 'Gogo Gogi';
+            data['ucompanyid'] = '123';
+            data['uactive'] = '0';
+            data['ulang'] = 'English';
+            data['utimezone'] = 'UTC';*/
+            
+            
+            this.socket.emit('createUser', data);
+            this.socket.on('responseCreateUser', function(response){
+            	debugger
+            	console.log('responseCreateUser ANSWER')
             });
 		}
 	}

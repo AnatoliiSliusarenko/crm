@@ -9,7 +9,7 @@ define(function(){
 				return window.localStorage.getItem(key);
 			}
 		},
-		setToLocalStorage: function(key, value){
+		saveToLocalStorage: function(key, value){
 			if (window.localStorage === "undefined")
 			{
 				return false;
