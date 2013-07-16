@@ -104,7 +104,26 @@ define(function(){
 			
 			this.socket.emit('getModules', {"hash": hash, "uid": uid});
 			this.socket.on('responseGetModules', function(response){
-				debugger
+				response = $.parseJSON(response);
+				switch(response.result.status)
+            	{
+            		case "0":
+            		{
+            			console.log('responseGetModules OK');
+            			
+            			App.Modules.UI.initModulesMenu(response.data);
+            			App.Modules.UI.displayTopMenu();
+            			App.Modules.UI.displayLeftMenu();
+            			break;
+            		}
+            		default:
+            		{
+            			console.log('responseGetModules BAD');
+            			
+            			App.Modules.UI.initLoginPage();
+            			break;
+            		}
+            	}		
 			});
 		}
 	}

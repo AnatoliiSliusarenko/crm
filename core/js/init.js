@@ -18,7 +18,8 @@ var App = App ||
 	},
 	Classes: {},
 	Libs: {
-		IO: {}
+		IO: {},
+		KO: {}
 	},
 	Modules: {
 		UI: {},
@@ -33,11 +34,12 @@ var App = App ||
 
 
 //include all files
-requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "communication"], function(classesContent, uiContent, localstorageContent, ioContent, communicationContent){
+requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "../../libraries/knockout-2.3.0", "communication"], function(classesContent, uiContent, localstorageContent, ioContent, knockoutContent, communicationContent){
 	App.Classes = classesContent;
 	
 	App.Libs.IO = ioContent;
-	
+	App.Libs.KO = knockoutContent;
+
 	App.Modules.UI = uiContent;
 	App.Modules.LocalStorage = localstorageContent;
 	App.Modules.Communication = communicationContent;
