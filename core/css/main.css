@@ -1,4 +1,106 @@
 @CHARSET "UTF-8";
+/* 
+html5doctor.com Reset Stylesheet
+v1.6.1
+Last Updated: 2010-09-17
+Author: Richard Clark - http://richclarkdesign.com 
+Twitter: @rich_clark
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section { 
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+/* change colours to suit your needs */
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+
+/* change colours to suit your needs */
+mark {
+    background-color:#ff9;
+    color:#000; 
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+/* change border colour to suit your needs */
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+    vertical-align:middle;
+}
 @font-face {
 	font-family: 'Segoe UI';
 	/* IE8 HACK: объявление EOT должно идти первым, содержать ?# и заключено в единичные кавычки */
@@ -18,20 +120,12 @@
 }
 body {
 	font-family: "Segoe UI";
-	background-color: #999999;
-}
-ul{
-  margin:0px;
-  padding-left:25px;
-}
-li{
-  margin:0;
 }
 #topmenu-holder nav ul li{
 height: 27px;
 color: #fff;
 padding-left: 13px;
-line-height: 27px;
+line-height: 24px;
 overflow: hidden;
 float:left;
 position: relative;
@@ -53,7 +147,7 @@ font-size:12px;
  background-color:#444f67;
 }
 #topmenu-holder nav ul li a:hover{
-/*   text-decoration:underline; */
+
 }
 
 #topmenu-holder nav ul{
@@ -80,17 +174,49 @@ font-size:12px;
   top:30px;
   left:0;
   width:200px;
-  background:#fff;
+  background:#f0eeee;
   height:100%;
 }
 #leftmenu-holder nav ul:first-child {
   margin-top:10px;
 }
+
+#leftmenu-holder nav ul li {
+  list-style:none;
+  font-weight:normal;
+  padding:0px 0px 0px 20px;
+  width:auto;
+  text-shadow: 1px 1px #fff;
+  font-size:12px;
+}
+#leftmenu-holder nav ul li {
+font-weight:bold;
+}
+#leftmenu-holder nav ul li >ul li {
+font-weight:normal;
+text-shadow:none;
+}
 #leftmenu-holder nav ul li a{
-  color:#2da7E4;
+  color:#4d5a75;
+  text-decoration:none;
+  font-size: 12px;
+  line-height:23px;
+}
+#leftmenu-holder nav ul li.selected{
+background:#4d5a75;
+border-top: 1px solid lightgrey;
+border-bottom: 1px solid #dedede;
+text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+-moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 -1px 3px rgba(40, 40, 40, 0.2);
+-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 -1px 3px rgba(40, 40, 40, 0.2);
+box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 -1px 3px rgba(40, 40, 40, 0.2);  
+}
+#leftmenu-holder nav ul li.selected a{
+  background:#4d5a75;
+  color:#fff;
 }
 #leftmenu-holder nav ul li a:hover{
-  color:#4d67E4;
+ 
 }
 #content-holder{
   display:block;
