@@ -12,10 +12,10 @@ define(function(){
 	}
 	
 	function displayMMItem(destItem, childItems){
-		$ul = destItem.append("<ul></ul>").find("ul");
+		var $ul = destItem.append("<ul></ul>").find("ul");
 		for (ind in childItems)
 		{
-			var $li = $ul.append("<li><a></a></li>").find("li").last();
+			var $li = $("<li><a></a></li>");
 			
 			$li.find("a")
 			   .attr("data-link", childItems[ind].link)
@@ -23,7 +23,7 @@ define(function(){
 			
 			if(childItems[ind].children != [])
 				displayMMItem($li, childItems[ind].children);
-			
+			//add to ul
 			
 		}
 	}
@@ -71,6 +71,7 @@ define(function(){
 				$ul.empty();
 			for (ind in this.modulesMenu)
 			{
+				//create and than add
 				$li = $ul.append("<li><a></a></li>").find("li").last();
 				
 				if(this.modulesMenu[ind].selected == true) $li.addClass("selected");
