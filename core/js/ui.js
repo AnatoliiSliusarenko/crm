@@ -11,20 +11,27 @@ define(function(){
 		}
 	}
 	
-	function displayMMItem(destItem, childItems){
+	function displayMMItems(destItem, childItems){
 		var $ul = destItem.append("<ul></ul>").find("ul");
+		
 		for (ind in childItems)
 		{
 			var $li = $("<li><a></a></li>");
 			
 			$li.find("a")
 			   .attr("data-link", childItems[ind].link)
-			   .text(childItems[ind].link);
+			   .attr("href", "#")
+			   .text(childItems[ind].link)
+			   .bind('click', function(event){
+				   var link = $(event.target).attr('data-link');
+				   App.Modules.Communication.getList(link);
+				   return false;
+			   });
 			
 			if(childItems[ind].children != [])
-				displayMMItem($li, childItems[ind].children);
-			//add to ul
+				displayMMItems($li, childItems[ind].children);
 			
+			$ul.append($li);
 		}
 	}
 	return {
@@ -71,11 +78,28 @@ define(function(){
 				$ul.empty();
 			for (ind in this.modulesMenu)
 			{
-				//create and than add
-				$li = $ul.append("<li><a></a></li>").find("li").last();
+				var $li = $ul.append("<li><a></a></li>").find("li").last();
 				
 				if(this.modulesMenu[ind].selected == true) $li.addClass("selected");
-											  
+							
+				$li.bind('click', function(){
+					var link = $(this).find('a').attr('data-link');
+					
+					for (ind in App.Modules.UI.modulesMenu)
+					{
+						if (App.Modules.UI.modulesMenu[ind].link == link)
+						{
+							App.Modules.UI.modulesMenu[ind].selected = true;
+						}else
+						{
+							App.Modules.UI.modulesMenu[ind].selected = false;
+						}
+					}
+					  
+					App.Modules.UI.displayTopMenu();
+					App.Modules.UI.displayLeftMenu();
+				});
+				
 				$li.find("a")
 				   .attr("data-link", this.modulesMenu[ind].link)
 				   .text(this.modulesMenu[ind].link);
@@ -88,8 +112,10 @@ define(function(){
 			for (ind in this.modulesMenu)
 			{
 				if (this.modulesMenu[ind].link == link)
-					displayMMItem($nav, this.modulesMenu[ind].structure);
-				break;
+				{
+					displayMMItems($nav, this.modulesMenu[ind].structure);
+					break;
+				}
 			}	
 		}
 	}

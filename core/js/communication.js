@@ -75,10 +75,11 @@ define(function(){
 				App.Modules.UI.initLoginPage();
 				return;
 			}
+			
 			/*var data = {};
-            data['ulogin'] = 'vika';
+            data['ulogin'] = 'olya';
             data['upass'] = '12345';
-            data['uemail'] = 'vika@dghhfg.com';
+            data['uemail'] = 'olya@dghhfg.com';
             data['uname'] = 'Gogo Gogi';
             data['ucompanyid'] = '123';
             data['uactive'] = '0';
@@ -125,6 +126,23 @@ define(function(){
             		}
             	}		
 			});
+		},
+		getList: function(dataType){
+			debugger
+			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+	
+			if ((hash == false) || (uid == false)) 
+			{
+				App.Modules.UI.initLoginPage();
+				return;
+			}
+			
+			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType});
+			this.socket.on('responseGetList', function(response){
+				debugger
+				
+			})
 		}
 	}
 });
