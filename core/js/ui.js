@@ -1,4 +1,8 @@
 define(function(){
+	function loadContent(destID, resURL, resID, callback){
+		$("#" + destID).empty();
+		$("#" + destID).load(resURL + " #" + resID, callback);
+	}
 	function addChildren(destItem, childItems){
 		for (ind in childItems)
 		{
@@ -36,12 +40,8 @@ define(function(){
 	}
 	return {
 		modulesMenu: [],
-		loadContent: function(destID, resURL, resID, callback){
-			$("#" + destID).empty();
-			$("#" + destID).load(resURL + " #" + resID, callback);
-		},
 		initLoginPage: function(){
-			this.loadContent(App.ID.pageHolder, App.Pages.login, App.ID.contentResource, function(){
+			loadContent(App.ID.pageHolder, App.Pages.login, App.ID.contentResource, function(){
 				$("#" + App.ID.loginForm).bind("submit",function(){
 					var login = $(this).find("#login").val(),
 						password = $(this).find("#password").val();
@@ -55,7 +55,7 @@ define(function(){
 			$("#" + App.ID.loginForm + " #response").empty().append(message);
 		},
 		initMainPage: function(){
-			this.loadContent(App.ID.pageHolder, App.Pages.main, App.ID.contentResource, function(){	
+			loadContent(App.ID.pageHolder, App.Pages.main, App.ID.contentResource, function(){	
 				App.Modules.Communication.getModules();
 			});
 		},
@@ -117,6 +117,9 @@ define(function(){
 					break;
 				}
 			}	
+		},
+		initTemplate: function(){
+			
 		}
 	}
 });

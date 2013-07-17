@@ -33,7 +33,7 @@ var App = App ||
 };
 
 
-//include all files
+//include modules and libraries
 requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "../../libraries/knockout-2.3.0", "communication"], function(classesContent, uiContent, localstorageContent, ioContent, knockoutContent, communicationContent){
 	App.Classes = classesContent;
 	
@@ -43,8 +43,6 @@ requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "../../
 	App.Modules.UI = uiContent;
 	App.Modules.LocalStorage = localstorageContent;
 	App.Modules.Communication = communicationContent;
-	
-	
-	
+		
 	App.InitApp();
 });
