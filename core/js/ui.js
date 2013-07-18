@@ -72,11 +72,13 @@ define(function(){
 		initMainPage: function(){
 			loadContent(App.ID.pageHolder, App.URL.main, App.ID.contentResource, function(){	
 				App.Modules.Communication.getModules();
-				$("a.changeDataView").click(function(){
+				$("a." + App.ID.changeCVClass).click(function(){
 					var viewType = $(this).attr('data-view-type');
 					
 					App.Modules.UI.initContentView(viewType);
 					App.Modules.UI.displayContent();
+					
+					return false;
 				});
 			});
 		},

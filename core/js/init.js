@@ -12,7 +12,8 @@ var App = App ||
 		contentResource: "wrapper",
 		loginForm: "loginForm",
 		contentHolder: "content-holder",
-		topBar: "top-bar"
+		topBar: "top-bar",
+		changeCVClass: "changeContentView"
 	},
 	URL: {
 		login: "core/html/login.html",
