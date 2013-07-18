@@ -6,7 +6,13 @@
 </head>
 <body>
 	<div id="wrapper">
-		This is Users List template
+		<h1>This is Users List template:</h1>
+		<hr>
+		<div data-bind="foreach: data">
+			<h3 data-bind="text: ulogin"></h3>
+			<h3 data-bind="text: uemail"></h3>
+			<hr>
+		</div>
 	</div>	
 </body>
 </html>

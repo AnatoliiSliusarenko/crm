@@ -6,7 +6,22 @@
 </head>
 <body>
 	<div id="wrapper">
-		This is Users Thumbnails template
+		<h1>This is Users Thumbnails template:</h1>
+		<hr>
+		<div data-bind="foreach: data">
+			<div style="background-color: #999999; 
+						padding: 5px; 
+						width: 200px; 
+						height: 200px; 
+						display: inline-block; 
+						position: relative; 
+						border: 1px solid red;
+						margin: 5px;
+						z-index: -10;">
+				<h3 data-bind="text: ulogin"></h3>
+				<h3 data-bind="text: uemail"></h3>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

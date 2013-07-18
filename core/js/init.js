@@ -10,11 +10,14 @@ var App = App ||
 		leftMenu: "leftmenu-holder",
 		pageHolder: "body",
 		contentResource: "wrapper",
-		loginForm: "loginForm"
+		loginForm: "loginForm",
+		contentHolder: "content-holder",
+		topBar: "top-bar"
 	},
-	Pages: {
+	URL: {
 		login: "core/html/login.html",
-		main: "core/html/main.html"
+		main: "core/html/main.html",
+		templateFolder: "core/html/templates/"
 	},
 	Classes: {},
 	Libs: {

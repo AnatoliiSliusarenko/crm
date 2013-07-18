@@ -40,8 +40,23 @@ define(function(){
 	}
 	return {
 		modulesMenu: [],
+		Content: {
+			data: [],
+			type: "users",
+			view: "thumbnails"
+		},
+		initContentData: function(data){
+			this.Content.data = App.Libs.KO.observableArray(data);
+			
+		},
+		initContentType: function(type){
+			this.Content.type = type;
+		},
+		initContentView: function(view){
+			this.Content.view = view;
+		},
 		initLoginPage: function(){
-			loadContent(App.ID.pageHolder, App.Pages.login, App.ID.contentResource, function(){
+			loadContent(App.ID.pageHolder, App.URL.login, App.ID.contentResource, function(){
 				$("#" + App.ID.loginForm).bind("submit",function(){
 					var login = $(this).find("#login").val(),
 						password = $(this).find("#password").val();
@@ -55,7 +70,7 @@ define(function(){
 			$("#" + App.ID.loginForm + " #response").empty().append(message);
 		},
 		initMainPage: function(){
-			loadContent(App.ID.pageHolder, App.Pages.main, App.ID.contentResource, function(){	
+			loadContent(App.ID.pageHolder, App.URL.main, App.ID.contentResource, function(){	
 				App.Modules.Communication.getModules();
 			});
 		},
@@ -118,8 +133,15 @@ define(function(){
 				}
 			}	
 		},
-		initTemplate: function(){
-			
+		displayContent: function(){
+			var url = App.URL.templateFolder 
+					+ this.Content.type + "/" 
+					+ this.Content.view + ".html";
+			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
+					App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
+					App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
+					
+			});
 		}
 	}
 });

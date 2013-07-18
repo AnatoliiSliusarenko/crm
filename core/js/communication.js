@@ -5,6 +5,7 @@ define(function(){
 			this.socket = App.Libs.IO.connect('http://' + App.Server.ip + ':' + App.Server.port);
 			this.socket.on('connect', function(){
 				console.log('Server connected...');
+				//App.Modules.Communication.createUser(null);
 			});
 			this.socket.on('disconnect', function(){
 				console.log('Server disconnected...');
@@ -67,7 +68,7 @@ define(function(){
             });
 		},
 		createUser: function(data){
-			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+			/*var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
 		
 			if ((hash == false) || (uid == false)) 
@@ -75,16 +76,16 @@ define(function(){
 				App.Modules.UI.initLoginPage();
 				return;
 			}
-			
-			/*var data = {};
-            data['ulogin'] = 'olya';
+			*/
+			var data = {};
+            data['ulogin'] = 'vvv';
             data['upass'] = '12345';
-            data['uemail'] = 'olya@dghhfg.com';
+            data['uemail'] = 'vvv@dghhfg.com';
             data['uname'] = 'Gogo Gogi';
             data['ucompanyid'] = '123';
             data['uactive'] = '0';
             data['ulang'] = 'English';
-            data['utimezone'] = 'UTC';*/
+            data['utimezone'] = 'UTC';
             
             
             this.socket.emit('createUser', data);
@@ -128,7 +129,6 @@ define(function(){
 			});
 		},
 		getList: function(dataType){
-			debugger
 			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
 	
@@ -138,10 +138,26 @@ define(function(){
 				return;
 			}
 			
-			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType});
+			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": "Users"});
 			this.socket.on('responseGetList', function(response){
-				debugger
-				
+				switch(response.result.status)
+            	{
+            		case "0":
+            		{
+            			console.log('responseGetList OK');
+            			App.Modules.UI.initContentData(response.data);
+            			//App.Modules.UI.initContentType('...');
+            			//App.Modules.UI.initContentView('...');
+            			App.Modules.UI.displayContent();
+            			break;
+            		}
+            		default:
+            		{
+            			console.log('responseGetList BAD');
+            			
+            			break;
+            		}
+            	}		
 			})
 		}
 	}
