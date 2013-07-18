@@ -43,7 +43,7 @@ define(function(){
 		Content: {
 			data: [],
 			type: "users",
-			view: "thumbnails"
+			view: "list"
 		},
 		initContentData: function(data){
 			this.Content.data = App.Libs.KO.observableArray(data);
@@ -72,6 +72,12 @@ define(function(){
 		initMainPage: function(){
 			loadContent(App.ID.pageHolder, App.URL.main, App.ID.contentResource, function(){	
 				App.Modules.Communication.getModules();
+				$("a.changeDataView").click(function(){
+					var viewType = $(this).attr('data-view-type');
+					
+					App.Modules.UI.initContentView(viewType);
+					App.Modules.UI.displayContent();
+				});
 			});
 		},
 		initModulesMenu: function(initArray){
@@ -143,6 +149,7 @@ define(function(){
 					
 			});
 		}
+		
 	}
 });
 
