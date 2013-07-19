@@ -48,7 +48,7 @@ define(function(){
 			
 		},
 		initContentData: function(data){
-			this.Content.index = App.Libs.KO.observable(4);
+			this.Content.index = App.Libs.KO.observable(0);
 			this.Content.data = App.Libs.KO.observableArray(data);
 			
 		},
