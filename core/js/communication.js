@@ -129,6 +129,7 @@ define(function(){
 			});
 		},
 		getList: function(dataType){
+			console.log('getLIST');
 			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
 	

@@ -13,7 +13,8 @@ var App = App ||
 		loginForm: "loginForm",
 		contentHolder: "content-holder",
 		topBar: "top-bar",
-		changeCVClass: "changeContentView"
+		changeCVClass: "changeContentView",
+		changeCIClass: "changeContentIndex"
 	},
 	URL: {
 		login: "core/html/login.html",

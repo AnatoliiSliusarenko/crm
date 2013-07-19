@@ -6,7 +6,25 @@
 </head>
 <body>
 	<div id="wrapper">
-		This is Users Form template
+		<h1>This is Users Form template</h1>
+		<hr>
+		<h1 data-bind="text: index">
+		</h1>
+		<hr>
+		<div data-bind="foreach: data">
+			<div style="background-color: #999999; 
+						padding: 5px; 
+						width: 400px; 
+						height: 400px; 
+						display: inline-block; 
+						position: relative; 
+						border: 1px solid black;
+						margin: 5px;
+						z-index: -10;">
+				<h3 data-bind="text: ulogin"></h3>
+				<h3 data-bind="text: uemail"></h3>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

@@ -43,9 +43,12 @@ define(function(){
 		Content: {
 			data: [],
 			type: "users",
-			view: "list"
+			view: "list",
+			index: null
+			
 		},
 		initContentData: function(data){
+			this.Content.index = App.Libs.KO.observable(4);
 			this.Content.data = App.Libs.KO.observableArray(data);
 			
 		},
@@ -54,6 +57,11 @@ define(function(){
 		},
 		initContentView: function(view){
 			this.Content.view = view;
+		},
+		changeContentIndex: function(shift){
+			this.Content.index(this.Content.index() + shift);
+			
+			//if <0   or more than length
 		},
 		initLoginPage: function(){
 			loadContent(App.ID.pageHolder, App.URL.login, App.ID.contentResource, function(){
@@ -78,6 +86,13 @@ define(function(){
 					App.Modules.UI.initContentView(viewType);
 					App.Modules.UI.displayContent();
 					
+					return false;
+				});
+				
+				$("a." + App.ID.changeCIClass).click(function(){
+					var  shift = $(this).attr('data-shift') == "left" ? -1 : 1;
+					App.Modules.UI.changeContentIndex(shift);
+					console.log(App.Modules.UI.Content.index());
 					return false;
 				});
 			});
@@ -145,6 +160,7 @@ define(function(){
 			var url = App.URL.templateFolder 
 					+ this.Content.type + "/" 
 					+ this.Content.view + ".html";
+			
 			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
 					App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
 					App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
