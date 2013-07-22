@@ -8,23 +8,23 @@
 	<div id="wrapper">
 		<h1>This is Users Form template</h1>
 		<hr>
-		<h1 data-bind="text: index">
+		Current element: <h1 data-bind="text: index() + 1">
 		</h1>
 		<hr>
-		<div data-bind="foreach: data">
+	
 			<div style="background-color: #999999; 
 						padding: 5px; 
 						width: 400px; 
 						height: 400px; 
-						display: inline-block; 
+						display: block; 
 						position: relative; 
 						border: 1px solid black;
-						margin: 5px;
+						margin: 0px auto;
 						z-index: -10;">
-				<h3 data-bind="text: ulogin"></h3>
-				<h3 data-bind="text: uemail"></h3>
+				<h3 data-bind="text: curElement().ulogin"></h3>
+				<h3 data-bind="text: curElement().uemail"></h3>
 			</div>
-		</div>
+		
 	</div>
 </body>
 </html>

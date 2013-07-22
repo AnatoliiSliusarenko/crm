@@ -13,6 +13,7 @@ var App = App ||
 		loginForm: "loginForm",
 		contentHolder: "content-holder",
 		topBar: "top-bar",
+		userPanel: "loginPanel",
 		changeCVClass: "changeContentView",
 		changeCIClass: "changeContentIndex"
 	},

@@ -22,6 +22,7 @@ define(function(){
 						App.Modules.LocalStorage.saveToLocalStorage("hash", response.data.hash);
 						App.Modules.LocalStorage.saveToLocalStorage("uid", response.data.uid);
 						
+						App.Modules.UI.initUser(response.data.uid, response.data.uname);
 						App.Modules.UI.initMainPage();
 						break;
 					}
@@ -53,6 +54,7 @@ define(function(){
             		case "0":
             		{
             			console.log('checkHash OK');
+            			//App.Modules.UI.initUser(response.data.uid, response.data.uname);
             			
             			App.Modules.UI.initMainPage();
             			break;
