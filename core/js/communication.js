@@ -54,7 +54,8 @@ define(function(){
             		case "0":
             		{
             			console.log('checkHash OK');
-            			//App.Modules.UI.initUser(response.data.uid, response.data.uname);
+            			
+            			App.Modules.UI.initUser(response.data.uid, response.data.uname);
             			
             			App.Modules.UI.initMainPage();
             			break;
@@ -80,10 +81,10 @@ define(function(){
 			}
 			*/
 			var data = {};
-            data['ulogin'] = 'vvv';
+            data['ulogin'] = 'olya';
             data['upass'] = '12345';
-            data['uemail'] = 'vvv@dghhfg.com';
-            data['uname'] = 'Gogo Gogi';
+            data['uemail'] = 'olya@dghhfg.com';
+            data['uname'] = 'Olya Ivanova';
             data['ucompanyid'] = '123';
             data['uactive'] = '0';
             data['ulang'] = 'English';

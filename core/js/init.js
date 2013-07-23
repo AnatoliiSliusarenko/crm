@@ -12,7 +12,12 @@ var App = App ||
 		contentResource: "wrapper",
 		loginForm: "loginForm",
 		contentHolder: "content-holder",
-		topBar: "top-bar",
+		viewPanel: "top-bar",
+		leftBtn: "leftBtn",
+		rightBtn: "rightBtn",
+		listBtn: "listBtn",
+		thumbBtn: "thumbBtn",
+		formBtn: "formBtn",
 		userPanel: "loginPanel",
 		changeCVClass: "changeContentView",
 		changeCIClass: "changeContentIndex"

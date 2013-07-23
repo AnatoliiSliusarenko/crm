@@ -63,6 +63,7 @@ define(function(){
 			this.Content.curElement = App.Libs.KO.computed(function(){
 				return this.data.peek()[this.index()];
 			}, this.Content);
+			this.displayViewPanel();
 		},
 		initContentType: function(type){
 			this.Content.type = type;
@@ -72,8 +73,13 @@ define(function(){
 		},
 		changeContentIndex: function(shift){
 			var newIndex = this.Content.index() + shift;
-			if (newIndex < 0) newIndex = 0;
-			if (newIndex >= this.Content.data.peek().length) newIndex = this.Content.data.peek().length - 1;
+			if (newIndex < 0) {
+				newIndex = 0;
+			}else
+			if (newIndex >= this.Content.data.peek().length) {
+				newIndex = this.Content.data.peek().length - 1;
+			}
+			
 			this.Content.index(newIndex);
 		},
 		initLoginPage: function(){
@@ -94,11 +100,13 @@ define(function(){
 			loadContent(App.ID.pageHolder, App.URL.main, App.ID.contentResource, function(){	
 				App.Modules.Communication.getModules();
 				App.Modules.UI.displayUserPanel();
+				App.Modules.UI.initContentData([]);
 				$("a." + App.ID.changeCVClass).click(function(){
 					var viewType = $(this).attr('data-view-type');
 					
 					App.Modules.UI.initContentView(viewType);
 					App.Modules.UI.displayContent();
+					App.Modules.UI.displayViewPanel();
 					
 					return false;
 				});
@@ -106,6 +114,7 @@ define(function(){
 				$("a." + App.ID.changeCIClass).click(function(){
 					var  shift = $(this).attr('data-shift') == "left" ? -1 : 1;
 					App.Modules.UI.changeContentIndex(shift);
+					App.Modules.UI.displayViewPanel();
 					return false;
 				});
 			});
@@ -183,6 +192,29 @@ define(function(){
 		displayUserPanel: function(){
 			$("#" + App.ID.userPanel + " #userName").text(this.User.uname);
 			$("#" + App.ID.userPanel + " img").attr("src", this.User.uimage);
+		},
+		displayViewPanel: function(){
+			if (this.Content.view != "form")
+			{
+				$("#" + App.ID.rightBtn).css("display", "none");
+				$("#" + App.ID.leftBtn).css("display", "none");
+			}else
+			{
+				if (this.Content.index() == 0)
+				{
+					$("#" + App.ID.rightBtn).css("display", "block");
+					$("#" + App.ID.leftBtn).css("display", "none");
+				}else
+				if (this.Content.index() == this.Content.data.peek().length - 1)
+				{
+					$("#" + App.ID.rightBtn).css("display", "none");
+					$("#" + App.ID.leftBtn).css("display", "block");
+				}else
+				{
+					$("#" + App.ID.rightBtn).css("display", "block");
+					$("#" + App.ID.leftBtn).css("display", "block");
+				}
+			}
 		}
 		
 	}
