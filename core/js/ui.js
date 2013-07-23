@@ -6,7 +6,7 @@ define(function(){
 	function addChildren(destItem, childItems){
 		for (ind in childItems)
 		{
-			var newMMItem = new App.Classes.ModuleMenuItem(childItems[ind].cname, childItems[ind].cname, false);
+			var newMMItem = new App.Classes.ModuleMenuItem(childItems[ind].cname, (childItems[ind].link == true) ? childItems[ind].cname : null, false);
 			
 			if (childItems[ind].children != [])
 				addChildren(newMMItem, childItems[ind].children);
@@ -20,17 +20,24 @@ define(function(){
 		
 		for (ind in childItems)
 		{
-			var $li = $("<li><a></a></li>");
+			var $li = $("<li></li>");
 			
-			$li.find("a")
-			   .attr("data-link", childItems[ind].link)
-			   .attr("href", "#")
-			   .text(childItems[ind].link)
-			   .bind('click', function(event){
-				   var link = $(event.target).attr('data-link');
-				   App.Modules.Communication.getList(link);
-				   return false;
-			   });
+			if(childItems[ind].link == null)
+			{
+				$li.append(childItems[ind].title);
+			}else
+			{
+				$li.append("<a></a>");
+				$li.find("a")
+				   .attr("data-link", childItems[ind].link)
+				   .attr("href", "#")
+				   .text(childItems[ind].title)
+				   .bind('click', function(event){
+					   var link = $(event.target).attr('data-link');
+					   App.Modules.Communication.getList(link);
+					   return false;
+				   });
+			}
 			
 			if(childItems[ind].children != [])
 				displayMMItems($li, childItems[ind].children);
@@ -102,8 +109,13 @@ define(function(){
 				App.Modules.UI.displayUserPanel();
 				App.Modules.UI.initContentData([]);
 				$("a." + App.ID.changeCVClass).click(function(){
+					if (App.Modules.UI.Content.data.peek().length == 0)
+					{
+						return false;
+					}
 					var viewType = $(this).attr('data-view-type');
-					
+					$("a." + App.ID.changeCVClass).removeClass('selected');
+					$(this).addClass('selected');
 					App.Modules.UI.initContentView(viewType);
 					App.Modules.UI.displayContent();
 					App.Modules.UI.displayViewPanel();
@@ -178,7 +190,7 @@ define(function(){
 				}
 			}	
 		},
-		displayContent: function(){
+		displayContent: function(){			
 			var url = App.URL.templateFolder 
 					+ this.Content.type + "/" 
 					+ this.Content.view + ".html";
@@ -214,6 +226,11 @@ define(function(){
 					$("#" + App.ID.rightBtn).css("display", "block");
 					$("#" + App.ID.leftBtn).css("display", "block");
 				}
+			}
+			
+			if ($("a." + App.ID.changeCVClass).hasClass('selected') == false)
+			{
+				$("a." + App.ID.changeCVClass).first().addClass('selected');
 			}
 		}
 		
