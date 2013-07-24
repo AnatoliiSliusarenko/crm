@@ -3,16 +3,16 @@ define(function(){
 		socket: {},
 		initConnection: function(){
 			this.socket = App.Libs.IO.connect('http://' + App.Server.ip + ':' + App.Server.port);
+			
 			this.socket.on('connect', function(){
 				console.log('Server connected...');
 				//App.Modules.Communication.createUser(null);
 			});
+			
 			this.socket.on('disconnect', function(){
 				console.log('Server disconnected...');
 			});
-		},
-		login: function(login, password){
-			this.socket.emit('login', {"ulogin": login, "upass": password});
+			
 			this.socket.on('responseLogin', function(response){
 				switch(response.result.status)
 				{
@@ -29,24 +29,14 @@ define(function(){
 					default: 
 					{
 						console.log('responseLogin BAD');
+						
 						App.Modules.UI.showLoginAnswer("Incorrect login or password");
 						break;
 					}
 					
 				}
 			});
-		},
-		checkHash: function(){	
-			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
-				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
 			
-			if ((hash == false) || (uid == false)) 
-			{
-				App.Modules.UI.initLoginPage();
-				return;
-			}
-		
-			this.socket.emit('checkHash', {"hash": hash, "uid": uid});
 			this.socket.on('responseCheckHash', function(response){
             	switch(response.result.status)
             	{
@@ -68,45 +58,12 @@ define(function(){
             		}
             	}
             });
-		},
-		createUser: function(data){
-			/*var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
-				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
-		
-			if ((hash == false) || (uid == false)) 
-			{
-				App.Modules.UI.initLoginPage();
-				return;
-			}
-			*/
-			var data = {};
-            data['ulogin'] = 'olya';
-            data['upass'] = '12345';
-            data['uemail'] = 'olya@dghhfg.com';
-            data['uname'] = 'Olya Ivanova';
-            data['ucompanyid'] = '123';
-            data['uactive'] = '0';
-            data['ulang'] = 'English';
-            data['utimezone'] = 'UTC';
-            
-            
-            this.socket.emit('createUser', data);
-            this.socket.on('responseCreateUser', function(response){
+			
+			this.socket.on('responseCreateUser', function(response){
             	debugger
             	console.log('responseCreateUser ANSWER')
             });
-		},
-		getModules: function(){
-			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
-				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
-
-			if ((hash == false) || (uid == false))
-			{
-				App.Modules.UI.initLoginPage();
-				return;
-			}
-
-			this.socket.emit('getModules', {"hash": hash, "uid": uid});
+			
 			this.socket.on('responseGetModules', function(response){
 				response = $.parseJSON(response);
 				switch(response.result.status)
@@ -142,8 +99,7 @@ define(function(){
 			
 			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType, "dataview": viewType});
 			this.socket.on('responseGetList', function(response){
-				console.log('response');
-                switch(response.result.status)
+				switch(response.result.status)
             	{
             		case "0":
             		{
@@ -161,7 +117,68 @@ define(function(){
             			break;
             		}
             	}		
-			})
+			});
+		},
+		login: function(login, password){
+			this.socket.emit('login', {"ulogin": login, "upass": password});			
+		},
+		checkHash: function(){	
+			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+			
+			if ((hash == false) || (uid == false)) 
+			{
+				App.Modules.UI.initLoginPage();
+				return;
+			}
+		
+			this.socket.emit('checkHash', {"hash": hash, "uid": uid});
+		},
+		createUser: function(data){
+			/*var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+		
+			if ((hash == false) || (uid == false)) 
+			{
+				App.Modules.UI.initLoginPage();
+				return;
+			}
+			*/
+			var data = {};
+            data['ulogin'] = 'olya';
+            data['upass'] = '12345';
+            data['uemail'] = 'olya@dghhfg.com';
+            data['uname'] = 'Olya Ivanova';
+            data['ucompanyid'] = '123';
+            data['uactive'] = '0';
+            data['ulang'] = 'English';
+            data['utimezone'] = 'UTC';
+            
+            this.socket.emit('createUser', data);
+		},
+		getModules: function(){
+			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+		
+			if ((hash == false) || (uid == false)) 
+			{
+				App.Modules.UI.initLoginPage();
+				return;
+			}
+			
+			this.socket.emit('getModules', {"hash": hash, "uid": uid});
+		},
+		getList: function(dataType){
+			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+	
+			if ((hash == false) || (uid == false)) 
+			{
+				App.Modules.UI.initLoginPage();
+				return;
+			}
+			
+			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": "Users"});
 		}
 	}
 });

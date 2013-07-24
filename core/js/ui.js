@@ -48,17 +48,24 @@ define(function(){
 		
 		for (ind in childItems)
 		{
-			var $li = $("<li><a></a></li>");
+			var $li = $("<li></li>");
 			
-			$li.find("a")
-			   .attr("data-link", childItems[ind].link)
-			   .attr("href", "#")
-			   .text(childItems[ind].link)
-			   .on('click', function(event){
-				   var link = $(event.target).attr('data-link');
-				   App.Modules.Communication.getList(link.toLowerCase());
-				   return false;
-			   });
+			if(childItems[ind].link == null)
+			{
+				$li.append(childItems[ind].title);
+			}else
+			{
+				$li.append("<a></a>");
+				$li.find("a")
+				   .attr("data-link", childItems[ind].link)
+				   .attr("href", "#")
+				   .text(childItems[ind].title)
+				   .bind('click', function(event){
+					   var link = $(event.target).attr('data-link');
+					   App.Modules.Communication.getList(link);
+					   return false;
+				   });
+			}
 			
 			if(childItems[ind].children != [])
 				displayMMItems($li, childItems[ind].children);
@@ -83,6 +90,7 @@ define(function(){
 			view: "list",
 			index: null,
 			curElement: null
+			
 		},
 		initContentData: function(data){
 			this.Content.index = App.Libs.KO.observable(0);
@@ -93,11 +101,11 @@ define(function(){
 			this.displayViewPanel();
 		},
 		initContentType: function(type){
-            this.Content.type = type;
-        },
-        initContentView: function(view){
-            this.Content.view = view;
-        },
+			this.Content.type = type;
+		},
+		initContentView: function(view){
+			this.Content.view = view;
+		},
 		changeContentIndex: function(shift){
 			var newIndex = this.Content.index() + shift;
 			if (newIndex < 0) {
@@ -128,11 +136,14 @@ define(function(){
 				App.Modules.Communication.getModules();
 				App.Modules.UI.displayUserPanel();
 				App.Modules.UI.initContentData([]);
-
-				//attach event handlers on view change buttons
-                $("a." + App.ID.changeCVClass).click(function(){
+				$("a." + App.ID.changeCVClass).click(function(){
+					if (App.Modules.UI.Content.data.peek().length == 0)
+					{
+						return false;
+					}
 					var viewType = $(this).attr('data-view-type');
-					
+					$("a." + App.ID.changeCVClass).removeClass('selected');
+					$(this).addClass('selected');
 					App.Modules.UI.initContentView(viewType);
 					App.Modules.UI.displayContent();
 					App.Modules.UI.displayViewPanel();
@@ -207,66 +218,15 @@ define(function(){
 				}
 			}	
 		},
-		displayContent: function(){
+		displayContent: function(){			
 			var url = App.URL.templateFolder 
 					+ this.Content.type + "/" 
 					+ this.Content.view + ".html";
 			
 			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
-				if(App.Modules.UI.Content.view == "gantt"){
-                    var projectArray = App.Modules.UI.Content.data.peek();
-
-                    if(!projectArray || projectArray.length == 0  ){
-                        return;
-                    }
-                    var ganttChart = createGanttChart(projectArray);
-
-
-                    ganttChart.create(App.ID.ganttViewHolder);
-
-                   /* var project1 = new GanttProjectInfo(1, "Applet redesign", new Date(2010, 5, 11));
-                    var parentTask1 = new GanttTaskInfo(1, "Old code review", new Date(2010, 5, 11), 208, 50, "");
-                    parentTask1.addChildTask(new GanttTaskInfo(2, "Convert to J#", new Date(2010, 5, 11), 100, 40, ""));
-                    parentTask1.addChildTask(new GanttTaskInfo(13, "Add new functions", new Date(2010, 5, 12), 80, 90, ""));
-                    var parentTask2 = new GanttTaskInfo(3, "Hosted Control", new Date(2010, 6, 7), 190, 80, "1");
-                    var parentTask5 = new GanttTaskInfo(5, "J# interfaces", new Date(2010, 6, 14), 60, 70, "6");
-                    var parentTask123 = new GanttTaskInfo(123, "use GUIDs", new Date(2010, 6, 14), 60, 70, "");
-                    parentTask5.addChildTask(parentTask123);
-                    parentTask2.addChildTask(parentTask5);
-                    parentTask2.addChildTask(new GanttTaskInfo(6, "Task D", new Date(2010, 6, 10), 30, 80, "14"));
-                    var parentTask4 = new GanttTaskInfo(7, "Unit testing", new Date(2010, 6, 15), 118, 80, "6");
-                    var parentTask8 = new GanttTaskInfo(8, "core (com)", new Date(2010, 6, 15), 100, 10, "");
-                    parentTask8.addChildTask(new GanttTaskInfo(55555, "validate uids", new Date(2010, 6, 20), 60, 10, ""));
-                    parentTask4.addChildTask(parentTask8);
-                    parentTask4.addChildTask(new GanttTaskInfo(9, "Stress test", new Date(2010, 6, 15), 80, 50, ""));
-                    parentTask4.addChildTask(new GanttTaskInfo(10, "User interfaces", new Date(2010, 6, 16), 80, 10, ""));
-                    parentTask2.addChildTask(parentTask4);
-                    parentTask2.addChildTask(new GanttTaskInfo(11, "Testing, QA", new Date(2010, 6, 21), 60, 100, "6"));
-                    parentTask2.addChildTask(new GanttTaskInfo(12, "Task B (Jim)", new Date(2010, 6, 8), 110, 1, "14"));
-                    parentTask2.addChildTask(new GanttTaskInfo(14, "Task A", new Date(2010, 6, 7), 8, 10, ""));
-                    parentTask2.addChildTask(new GanttTaskInfo(15, "Task C", new Date(2010, 6, 9), 110, 90, "14"));
-                    project1.addTask(parentTask1);
-                    project1.addTask(parentTask2);
-                    //project 2
-
-                    // Create Gantt control
-                    var ganttChartControl = new GanttChart();
-                    // Setup paths and behavior
-                    ganttChartControl.setImagePath("/crm/crm/core/imgs/");
-                    ganttChartControl.setEditable(true);
-                    ganttChartControl.showTreePanel(true);
-                    ganttChartControl.showContextMenu(true);
-                    ganttChartControl.showDescTask(true,'d,s-f');
-                    ganttChartControl.showDescProject(true,'n,d');
-                    // Load data structure
-                    ganttChartControl.addProject(project1);
-                    // Build control on the page
-                    var divId = App.ID.ganttViewHolder;
-                    ganttChartControl.create(divId);*/
-                } else{
-                    App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
-                    App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
-                }
+					App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
+					App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
+					
 			});
 		},
 		displayUserPanel: function(){
