@@ -62,7 +62,7 @@ define(function(){
 				   .text(childItems[ind].title)
 				   .bind('click', function(event){
 					   var link = $(event.target).attr('data-link');
-					   App.Modules.Communication.getList(link);
+					   App.Modules.Communication.getList(link.toLowerCase());
 					   return false;
 				   });
 			}
@@ -224,10 +224,16 @@ define(function(){
 					+ this.Content.view + ".html";
 			
 			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
+                if(App.Modules.UI.Content.view == "gantt"){
+                    var data = App.Modules.UI.Content;
+                }
+                else {
+                    App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
+                    App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
+                }
 
 
-                App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
-                App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
+
 					
 			});
 		},
