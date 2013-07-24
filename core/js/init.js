@@ -2,7 +2,8 @@
 var App = App || 
 {
 	Server: {
-		ip: "192.168.88.45",
+		ip: "192.168.88.109",
+		//ip: "192.168.88.109",
 		port: "8088"
 	},
 	ID: {
@@ -17,10 +18,13 @@ var App = App ||
 		rightBtn: "rightBtn",
 		listBtn: "listBtn",
 		thumbBtn: "thumbBtn",
+        ganttBtn: "ganttBtn",
+        ganttViewHolder: "GanttViewHolder",
 		formBtn: "formBtn",
 		userPanel: "loginPanel",
 		changeCVClass: "changeContentView",
 		changeCIClass: "changeContentIndex"
+
 	},
 	URL: {
 		login: "core/html/login.html",
@@ -47,7 +51,7 @@ var App = App ||
 //include modules and libraries
 requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "../../libraries/knockout-2.3.0", "communication"], function(classesContent, uiContent, localstorageContent, ioContent, knockoutContent, communicationContent){
 	App.Classes = classesContent;
-	
+
 	App.Libs.IO = ioContent;
 	App.Libs.KO = knockoutContent;
 

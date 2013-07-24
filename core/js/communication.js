@@ -29,7 +29,6 @@ define(function(){
 					default: 
 					{
 						console.log('responseLogin BAD');
-						
 						App.Modules.UI.showLoginAnswer("Incorrect login or password");
 						break;
 					}
@@ -100,13 +99,13 @@ define(function(){
 		getModules: function(){
 			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
-		
-			if ((hash == false) || (uid == false)) 
+
+			if ((hash == false) || (uid == false))
 			{
 				App.Modules.UI.initLoginPage();
 				return;
 			}
-			
+
 			this.socket.emit('getModules', {"hash": hash, "uid": uid});
 			this.socket.on('responseGetModules', function(response){
 				response = $.parseJSON(response);
@@ -131,20 +130,20 @@ define(function(){
             	}		
 			});
 		},
-		getList: function(dataType){
-			console.log('getLIST');
+		getList: function(dataType, viewType){
 			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
 	
-			if ((hash == false) || (uid == false)) 
+			if ((hash == false) || (uid == false))
 			{
 				App.Modules.UI.initLoginPage();
 				return;
 			}
 			
-			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": "Users"});
+			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType, "dataview": viewType});
 			this.socket.on('responseGetList', function(response){
-				switch(response.result.status)
+				console.log('response');
+                switch(response.result.status)
             	{
             		case "0":
             		{
