@@ -225,6 +225,7 @@ define(function(){
 			
 			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
                 if(App.Modules.UI.Content.view == "gantt"){
+
                     var projectArray = App.Modules.UI.Content.data.peek();
                         if(!projectArray || projectArray.length == 0  ){
                             return;
