@@ -225,17 +225,18 @@ define(function(){
 			
 			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
                 if(App.Modules.UI.Content.view == "gantt"){
-                    var data = App.Modules.UI.Content;
+                    var projectArray = App.Modules.UI.Content.data.peek();
+                        if(!projectArray || projectArray.length == 0  ){
+                            return;
+                        }
+                        var ganttChart = createGanttChart(projectArray);
+                        ganttChart.create(App.ID.ganttViewHolder)
                 }
                 else {
                     App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
                     App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
                 }
-
-
-
-					
-			});
+            });
 		},
 		displayUserPanel: function(){
 			$("#" + App.ID.userPanel + " #userName").text(this.User.uname);
