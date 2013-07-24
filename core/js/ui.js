@@ -224,8 +224,10 @@ define(function(){
 					+ this.Content.view + ".html";
 			
 			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
-					App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
-					App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
+
+
+                App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
+                App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
 					
 			});
 		},
