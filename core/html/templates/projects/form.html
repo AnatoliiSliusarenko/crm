@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Form</title>
+</head>
+<body>
+	<div id="wrapper">
+		<h1>This is Project Form template</h1>
+		<hr>
+		Current element: <h1 data-bind="text: index() + 1">
+		</h1>
+		<hr>
+	
+			<div style="background-color: #999999; 
+						padding: 5px; 
+						width: 400px; 
+						height: 400px; 
+						display: block; 
+						position: relative; 
+						border: 1px solid black;
+						margin: 0px auto;
+						z-index: -10;">
+				<h3 data-bind="text: curElement().projectname"></h3>
+			</div>
+		
+	</div>
+</body>
+</html>

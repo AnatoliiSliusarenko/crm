@@ -19,7 +19,7 @@ define(function(){
     function createGanttChart(projectArray){
         var ganttChartControl = new GanttChart();
         //chart settings
-        ganttChartControl.setImagePath("/crm/crm/core/images/");
+        ganttChartControl.setImagePath("/crm/core/images/");
         ganttChartControl.setEditable(true);
         ganttChartControl.showTreePanel(true);
         ganttChartControl.showContextMenu(true);
@@ -37,8 +37,9 @@ define(function(){
                     var parentTask = new GanttTaskInfo(task._id, task.summary, new Date(task.extrainfo.StartDate), hourCount, percentCompleted, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
                     newProject.addTask(parentTask);
                 });
+                ganttChartControl.addProject(newProject);
             }
-            ganttChartControl.addProject(newProject);
+
         });
 
         return ganttChartControl;
@@ -75,7 +76,8 @@ define(function(){
 				   .text(childItems[ind].title)
 				   .bind('click', function(event){
 					   var link = $(event.target).attr('data-link');
-					   App.Modules.Communication.getList(link.toLowerCase(), "gunview");
+                       App.Modules.UI.initContentType(link);
+					   App.Modules.Communication.getList(link.toLowerCase());
 					   return false;
 				   });
 			}
