@@ -4,6 +4,18 @@ define(function(){
 		$("#" + destID).load(resURL + " #" + resID, callback);
 	}
 
+    function calculateTaskHours(startDate,endDate){
+        if(!startDate || !endDate){
+            return 0;
+        }
+        if(startDate > endDate){
+            return 0;
+        }
+        var delta = new Date(endDate) - new Date(startDate);
+        var hours = Math.floor(((delta/1000)/60)/60);
+        return hours;
+    }
+
     function createGanttChart(projectArray){
         var ganttChartControl = new GanttChart();
         //chart settings
@@ -20,7 +32,9 @@ define(function(){
                 var startDate = new Date(project.info.StartDate);
                 var newProject = new GanttProjectInfo(project._id, project.projectname, startDate);
                 project.task.tasks.forEach(function(task){
-                    var parentTask = new GanttTaskInfo(task._id, task.description, new Date(task.extrainfo.StartDate), 30, 30, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
+                    var hourCount = calculateTaskHours(task.extrainfo.StartDate, task.extrainfo.EndDate);
+                    var percentCompleted = Math.floor(Math.random()*100+1);
+                    var parentTask = new GanttTaskInfo(task._id, task.summary, new Date(task.extrainfo.StartDate), hourCount, percentCompleted, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
                     newProject.addTask(parentTask);
                 });
             }
