@@ -17,15 +17,14 @@ define(function(){
         projectArray.forEach(function(project){
             if(project.task.tasks.length > 0){
                 //get the 'Date' portion of a Date object(without time)
-                var startDate = new Date(project.info.StartDate).toDateString();
+                var startDate = new Date(project.info.StartDate);
                 var newProject = new GanttProjectInfo(project._id, project.projectname, startDate);
                 project.task.tasks.forEach(function(task){
-
-                    var parentTask = new GanttTaskInfo(task._id, task.description, new Date(task.StartDate).toDateString(), 30, 30, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
+                    var parentTask = new GanttTaskInfo(task._id, task.description, new Date(task.extrainfo.StartDate), 30, 30, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
                     newProject.addTask(parentTask);
-                    ganttChartControl.addProject(newProject);
                 });
             }
+            ganttChartControl.addProject(newProject);
         });
 
         return ganttChartControl;
