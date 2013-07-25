@@ -7,7 +7,7 @@ define(function(){
     function createGanttChart(projectArray){
         var ganttChartControl = new GanttChart();
         //chart settings
-        ganttChartControl.setImagePath("/crm/crm/core/imgs/");
+        ganttChartControl.setImagePath("/crm/crm/core/images/");
         ganttChartControl.setEditable(true);
         ganttChartControl.showTreePanel(true);
         ganttChartControl.showContextMenu(true);
@@ -21,7 +21,7 @@ define(function(){
                 var newProject = new GanttProjectInfo(project._id, project.projectname, startDate);
                 project.task.tasks.forEach(function(task){
 
-                    var parentTask = new GanttTaskInfo(task._id, task.description, new Date(task.StartDate).toDateString(), hourCount, percentCompleted, predecessorTaskID);//Predecessor and this task will be joined by dependency line in the Gantt Chart.
+                    var parentTask = new GanttTaskInfo(task._id, task.description, new Date(task.StartDate).toDateString(), 30, 30, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
                     newProject.addTask(parentTask);
                     ganttChartControl.addProject(newProject);
                 });
@@ -62,7 +62,7 @@ define(function(){
 				   .text(childItems[ind].title)
 				   .bind('click', function(event){
 					   var link = $(event.target).attr('data-link');
-					   App.Modules.Communication.getList(link.toLowerCase());
+					   App.Modules.Communication.getList(link.toLowerCase(), "gunview");
 					   return false;
 				   });
 			}
@@ -144,6 +144,10 @@ define(function(){
 					var viewType = $(this).attr('data-view-type');
 					$("a." + App.ID.changeCVClass).removeClass('selected');
 					$(this).addClass('selected');
+                    if(viewType == "gantt")
+                    {
+                        App.Modules.Communication.getList("projects","gunview");
+                    }
 					App.Modules.UI.initContentView(viewType);
 					App.Modules.UI.displayContent();
 					App.Modules.UI.displayViewPanel();
