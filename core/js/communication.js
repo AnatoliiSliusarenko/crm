@@ -16,20 +16,20 @@ define(function(){
 			this.socket.on('responseLogin', function(response){
 				switch(response.result.status)
 				{
-					case "0": 
+					case "0":
 					{
 						console.log('responseLogin OK');
 						App.Modules.LocalStorage.saveToLocalStorage("hash", response.data.hash);
 						App.Modules.LocalStorage.saveToLocalStorage("uid", response.data.uid);
-						
+
 						App.Modules.UI.initUser(response.data.uid, response.data.uname);
 						App.Modules.UI.initMainPage();
 						break;
 					}
-					default: 
+					default:
 					{
 						console.log('responseLogin BAD');
-						
+
 						App.Modules.UI.showLoginAnswer("Incorrect login or password");
 						break;
 					}
@@ -87,8 +87,8 @@ define(function(){
             	}		
 			});
 		},
-		getList: function(dataType, dataview){
-			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+		getList: function(dataType, dataid){
+            var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
 	
 			if ((hash == false) || (uid == false))
@@ -97,7 +97,7 @@ define(function(){
 				return;
 			}
 			
-			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType, "dataview":dataview});
+			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType, "dataid":dataid});
 			this.socket.on('responseGetList', function(response){
 				switch(response.result.status)
             	{

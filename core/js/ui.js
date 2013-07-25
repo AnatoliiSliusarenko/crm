@@ -16,31 +16,42 @@ define(function(){
         return hours;
     }
 
-    function createGanttChart(projectArray){
+    function createGanttChart(projectArray, withTasks){
         var ganttChartControl = new GanttChart();
         //chart settings
-        ganttChartControl.setImagePath("/crm/core/images/");
+        ganttChartControl.setImagePath("/crm/crm/core/images/");
         ganttChartControl.setEditable(true);
         ganttChartControl.showTreePanel(true);
         ganttChartControl.showContextMenu(true);
         ganttChartControl.showDescTask(true,'d,s-f');
         ganttChartControl.showDescProject(true,'n,d');
+        if(withTasks){
+            projectArray.forEach(function(project){
+                if(project.task.tasks.length > 0){
+                    //get the 'Date' portion of a Date object(without time)
+                    var startDate = new Date(project.info.StartDate);
+                    var newProject = new GanttProjectInfo(project._id, project.projectname, startDate);
+                    project.task.tasks.forEach(function(task){
+                        var hourCount = calculateTaskHours(task.extrainfo.StartDate, task.extrainfo.EndDate);
+                        var percentCompleted = Math.floor(Math.random()*100+1);
+                        var parentTask = new GanttTaskInfo(task._id, task.summary, new Date(task.extrainfo.StartDate), hourCount, percentCompleted, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
+                        newProject.addTask(parentTask);
+                    });
+                    ganttChartControl.addProject(newProject);
+                }
 
-        projectArray.forEach(function(project){
-            if(project.task.tasks.length > 0){
-                //get the 'Date' portion of a Date object(without time)
-                var startDate = new Date(project.info.StartDate);
-                var newProject = new GanttProjectInfo(project._id, project.projectname, startDate);
-                project.task.tasks.forEach(function(task){
-                    var hourCount = calculateTaskHours(task.extrainfo.StartDate, task.extrainfo.EndDate);
-                    var percentCompleted = Math.floor(Math.random()*100+1);
-                    var parentTask = new GanttTaskInfo(task._id, task.summary, new Date(task.extrainfo.StartDate), hourCount, percentCompleted, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
-                    newProject.addTask(parentTask);
-                });
-                ganttChartControl.addProject(newProject);
-            }
+            });
+        }else{
+            var newProject = new GanttProjectInfo(1, 'Guntt View', new Date(projectArray[0].info.StartDate));
+            projectArray.forEach(function(project){
+                var hourCount = calculateTaskHours(project.info.StartDate,project.info.EndDate);
+                var percentCompleted = Math.floor(Math.random()*100+1);
+                var parentTask = new GanttTaskInfo(project._id, project.projectname, new Date(project.info.StartDate), hourCount,percentCompleted,"");
+                newProject.addTask(parentTask);
+            });
+            ganttChartControl.addProject(newProject);
+        }
 
-        });
 
         return ganttChartControl;
     }
@@ -58,36 +69,38 @@ define(function(){
 	}
 	
 	function displayMMItems(destItem, childItems){
-		var $ul = destItem.append("<ul></ul>").find("ul");
-		
-		for (ind in childItems)
-		{
-			var $li = $("<li></li>");
-			
-			if(childItems[ind].link == null)
-			{
-				$li.append(childItems[ind].title);
-			}else
-			{
-				$li.append("<a></a>");
-				$li.find("a")
-				   .attr("data-link", childItems[ind].link)
-				   .attr("href", "#")
-				   .text(childItems[ind].title)
-				   .bind('click', function(event){
-					   var link = $(event.target).attr('data-link');
-                       App.Modules.UI.initContentType(link);
-					   App.Modules.Communication.getList(link.toLowerCase());
-					   return false;
-				   });
-			}
-			
-			if(childItems[ind].children != [])
-				displayMMItems($li, childItems[ind].children);
-			
-			$ul.append($li);
-		}
-	}
+        var $ul = destItem.append("<ul></ul>").find("ul");
+
+        for (ind in childItems)
+        {
+            var $li = $("<li></li>");
+
+            if(childItems[ind].link == null)
+            {
+                $li.append(childItems[ind].title);
+            }else
+            {
+                $li.append("<a></a>");
+                $li.find("a")
+                    .attr("data-link", childItems[ind].link)
+                    .attr("href", "#")
+                    .text(childItems[ind].title)
+                    .bind('click', function(event){
+                        var link = $(event.target).attr('data-link');
+                        App.Modules.UI.initContentType(link);
+                        //When click the right
+                        App.Modules.UI.initContentView('list');
+                        App.Modules.Communication.getList(link.toLowerCase(), null);
+                        return false;
+                    });
+            }
+
+            if(childItems[ind].children != [])
+                displayMMItems($li, childItems[ind].children);
+
+            $ul.append($li);
+        }
+    }
 	return {
 		User: {
 			uid: null,
@@ -159,11 +172,11 @@ define(function(){
 					var viewType = $(this).attr('data-view-type');
 					$("a." + App.ID.changeCVClass).removeClass('selected');
 					$(this).addClass('selected');
-                    if(viewType == "gantt")
-                    {
-                        App.Modules.Communication.getList("projects","gunview");
+
+                    if(viewType == 'gantt'){
+                        App.Modules.Communication.getList(App.Modules.UI.Content.type.toLowerCase(), 'gunttview');
                     }
-					App.Modules.UI.initContentView(viewType);
+                    App.Modules.UI.initContentView(viewType);
 					App.Modules.UI.displayContent();
 					App.Modules.UI.displayViewPanel();
 					
@@ -239,18 +252,20 @@ define(function(){
 		},
 		displayContent: function(){			
 			var url = App.URL.templateFolder 
-					+ this.Content.type + "/" 
+					+ this.Content.type.toLowerCase() + "/"
 					+ this.Content.view + ".html";
 			
 			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
                 if(App.Modules.UI.Content.view == "gantt"){
 
                     var projectArray = App.Modules.UI.Content.data.peek();
-                        if(!projectArray || projectArray.length == 0  ){
-                            return;
-                        }
-                        var ganttChart = createGanttChart(projectArray);
-                        ganttChart.create(App.ID.ganttViewHolder)
+                    if(!projectArray || projectArray.length == 0  ){
+                        return;
+                    }
+                    var withTasks = App.Modules.UI.Content.type.toLowerCase() == "projects" ? false : true;
+
+                    var ganttChart = createGanttChart(projectArray, withTasks);
+                    ganttChart.create(App.ID.ganttViewHolder)
                 }
                 else {
                     App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
