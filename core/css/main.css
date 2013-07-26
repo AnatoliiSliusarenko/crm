@@ -113,6 +113,10 @@ input, select {
 	font-family: 'Icons';
 	src:url("../fonts/entypo-webfont.ttf") format('truetype');
 }
+@font-face {
+	font-family: 'Icons2';
+	src:url("../fonts/mnmliconsv21-webfont.ttf") format('truetype');
+}
 body {
 	font-family: "Segoe UI";
 }
@@ -165,14 +169,16 @@ font-size:12px;
   padding:0px;
   margin:0;
 }
+
 #leftmenu-holder{
   display:block;
   position:fixed;
   top:30px;
   left:0;
-  width:200px;
+  width:170px;
   background:#f0eeee;
   height:100%;
+  border-right: 1px solid #afafb6;
 }
 #leftmenu-holder nav ul:first-child {
   margin-top:10px;
@@ -218,9 +224,25 @@ box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 -1px 3px rgba(40, 40, 40
 #content-holder{
   display:block;
   width:auto;
+  margin-left:170px; 
+}
+#top-bar{
+display:block;
+  width:auto;
   margin-top:30px;
-  margin-left:200px;
-  
+  margin-left:170px; 
+  height:70px;
+  border-bottom: 1px solid #cacaca;
+background-color: #ededed;
+background-image: -webkit-gradient(linear, left top, left bottom, from(#fcfcfc), to(#dedede));
+background-image: -webkit-linear-gradient(top, #fcfcfc, #dedede);
+background-image: -moz-linear-gradient(top, #fcfcfc, #dedede);
+background-image: -ms-linear-gradient(top, #fcfcfc, #dedede);
+background-image: -o-linear-gradient(top, #fcfcfc, #dedede);
+background-image: linear-gradient(to bottom, #fcfcfc, #dedede);
+-moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 9px rgba(0, 0, 0, 0.1);
+-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 9px rgba(0, 0, 0, 0.1);
+box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4), 0 0 9px rgba(0, 0, 0, 0.1);
 }
 #loginForm{
   display:block;
@@ -236,7 +258,6 @@ dislplay:block;
 height:30px;
 }
 #loginPanel button{
-font-family: Icons;
 float:left;
 background:transparent;
 border:none;
@@ -245,7 +266,6 @@ top: -3px;
 box-sizing: border-box;
 border: none;
 box-shadow: none;
-
 background: none;
 color: white;
 width: 32px;
@@ -255,8 +275,73 @@ padding: 0px;
 }
 .icon{
 font-size: 34px;
+font-family: Icons;
+text-decoration:none;
 font-weight: 300 !important;
 text-shadow: 0px 1px 2px black;
+line-height: 17px;
+}
+.icon2{
+font-size: 21px;
+font-family: Icons2;
+text-decoration:none;
+font-weight: 300 !important;
+line-height: 24px;
+}
+.icon-btn{
+padding:0;
+display:block;
+margin:0;
+text-align: center;
+width:100%;
+height:100%;
+}
+.btn-list .selected{
+background: #999999;
+-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
+-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
+box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) inset;
+}
+.btn-list .selected a{
+color:white;
+text-shadow: 0px 1px 2px black;
+}
+.light{
+color:white;
+text-shadow: 0px 1px 2px black;
+}
+.dark{
+color:#4c4c4c;
+text-shadow: 0px 1px 2px white;
+}
+.right{
+float:right;
+}
+#template-switcher{
+margin-top:36px;
+}
+.btn-list{
+height:24px;
+float:left;
+margin:0 12px;
+padding:0;
+border:1px solid #ababab;
+border-radius:5px;
+}
+.btn-list:first-child{
+
+}
+ul.btn-list :last-child{
+border-right:0;
+}
+.btn-list li{
+border-right:1px solid #ababab;
+margin:0;
+padding:0;
+display:block;
+float:left;
+height:24px;
+width:24px;
 }
 #loginPanel button:hover{
 background: rgba(0, 0, 0, 0.2);
@@ -269,7 +354,6 @@ box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) inset;
 .dropdown-button{
 width:150px;
 float:left;
-
 height: 30px;
 padding: 0px;
 }
@@ -291,4 +375,7 @@ color: white;
 -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) inset;
 -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) inset;
 box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) inset;
+}
+#top-bar{
+
 }

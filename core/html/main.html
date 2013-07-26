@@ -22,14 +22,20 @@
     	<div id="leftmenu-holder">
     		<nav></nav>
     	</div>
-    	<div id="top-bar" style="width:300px; text-align: right; position: fixed; right: 0px; margin-top:10px; margin-right: 10px;">
-    		<a href="#" class="changeContentIndex" data-shift="left" id="leftBtn"><--</a>
-    		<a href="#" class="changeContentIndex" data-shift="right" id="rightBtn">--></a>
-    		
-    		<a href="#" class="changeContentView" data-view-type="list" id="listBtn">List</a>
-    		<a href="#" class="changeContentView" data-view-type="thumbnails" id="thumbBtn">Thumbnails</a>
-    		<a href="#" class="changeContentView" data-view-type="form" id="formBtn">Form</a>
-    		<a href="#" class="changeContentView" data-view-type="gantt" id="ganttBtn">Gant</a>
+    	
+    	<div id="top-bar">
+	    	<div id="template-switcher" class="right">
+	    		<ul class="btn-list">
+	    			<li><a href="#" class="changeContentIndex icon2 icon-btn dark" data-shift="left" id="leftBtn">(</a></li>
+	    			<li><a href="#" class="changeContentIndex icon2 icon-btn dark" data-shift="right" id="rightBtn">)</a></li>
+	    		</ul>
+	    		<ul class="btn-list">
+	    			<li><a href="#" class="changeContentView icon icon-btn dark" data-view-type="list" id="listBtn">i</a></li>
+	    			<li><a href="#" class="changeContentView icon icon-btn dark" data-view-type="thumbnails" id="thumbBtn">k</a></li>
+	    			<li><a href="#" class="changeContentView icon icon-btn dark" data-view-type="form" id="formBtn">m</a></li>
+	    			<li><a href="#" class="changeContentView icon2 icon-btn dark" data-view-type="gantt" id="ganttBtn">y</a></li>
+	    		</ul>
+	    	</div>
     	</div>
     	<div id="content-holder">Main content</div>
 	</div>
