@@ -119,7 +119,6 @@ define(function(){
 			}
 			
 			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType, "dataid":dataid});
-			
 		},
 		login: function(login, password){
 			this.socket.emit('login', {"ulogin": login, "upass": password});			
