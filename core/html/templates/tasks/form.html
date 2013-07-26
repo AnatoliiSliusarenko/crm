@@ -21,7 +21,11 @@
 						border: 1px solid black;
 						margin: 0px auto;
 						z-index: -10;">
-				<h3 data-bind="text: curElement().summary"></h3>
+                <span>Task:</span><span data-bind="text: curElement().summary"></span>
+                <span>Project:</span><span data-bind="text: curElement().projectname"></span>
+                <span>Assigned to:</span><span data-bind="text: curElement().assignedto"></span>
+                <span>Project Stage:</span><span data-bind="text: curElement().stage"></span>
+                <span>Assigned to:</span><span data-bind="text: curElement().assignedto"></span>
 			</div>
 		
 	</div>

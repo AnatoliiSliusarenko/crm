@@ -8,11 +8,37 @@
 	<div id="wrapper">
 		<h1>This is Task List template:</h1>
 		<hr>
-		<div data-bind="foreach: data">
+
+        <table>
+            <thead>
+                <tr>
+                    <td>Task Summary</td>
+                    <td>Project</td>
+                    <td>Assigned to</td>
+                    <td>Stage</td>
+                    <td>Starting Date</td>
+                    <td>Ending Date</td>
+                    <td>Progress (%)</td>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach:data">
+                <tr>
+                    <td data-bind="text:summary"></td>
+                    <td data-bind="text:projectname"></td>
+                    <td data-bind = "text:assignedto"></td>
+                    <td data-bind = "text:stage"></td>
+                    <td data-bind = "text:StartDate"></td>
+                    <td data-bind = "text:EndDate"></td>
+                    <td data-bind = "text:progress"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!--<div data-bind="foreach: data">
 			<h3 data-bind="text: summary"></h3>
 
 			<hr>
-		</div>
+		</div>-->
 	</div>	
 </body>
 </html>

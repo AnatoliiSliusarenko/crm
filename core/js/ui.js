@@ -41,8 +41,14 @@ define(function(){
                 }
 
             });
-        }else{
-            var newProject = new GanttProjectInfo(1, 'Guntt View', new Date(projectArray[0].info.StartDate));
+        } else {
+            ganttChartControl.showDescProject(false,'n,d');
+            var dateArray = $.makeArray(projectArray);
+            var arr = $.map(dateArray,function(val, i){
+                return val.info.StartDate;
+            });
+            var date = findMinDate(arr);
+            var newProject = new GanttProjectInfo(1, 'Guntt View', date);
             projectArray.forEach(function(project){
                 var hourCount = calculateTaskHours(project.info.StartDate,project.info.EndDate);
                 var percentCompleted = Math.floor(Math.random()*100+1);
@@ -52,8 +58,17 @@ define(function(){
             ganttChartControl.addProject(newProject);
         }
 
-
         return ganttChartControl;
+    }
+
+    function findMinDate(dateArray){
+        var minDate = dateArray[0];
+        dateArray.forEach(function(date){
+            if(minDate>date){
+                minDate = date;
+            }
+        });
+        return minDate;
     }
 
 	function addChildren(destItem, childItems){
@@ -67,6 +82,24 @@ define(function(){
 			destItem.addMMItem(newMMItem);
 		}
 	}
+
+    function convertToTaskArray(data){
+        var tasks = [];
+        data.forEach(function(project){
+            project.task.tasks.forEach(function(task){
+                tasks.push({
+                    'summary':task.summary,
+                    'projectname':project.projectname,
+                    'assignedto':task.assignedto,
+                    'stage':'Unknown Stage',
+                    'StartDate': new Date(task.extrainfo.StartDate).format("dd/mm/yy hh:mm:ss"),
+                    'EndDate': new Date(task.extrainfo.EndDate).format("dd/mm/yy hh:mm:ss"),
+                    'progress':'Unknown progress'
+                });
+            });
+        });
+        return tasks;
+    }
 	
 	function displayMMItems(destItem, childItems){
         var $ul = destItem.append("<ul></ul>").find("ul");
@@ -78,7 +111,7 @@ define(function(){
             if(childItems[ind].link == null)
             {
                 $li.append(childItems[ind].title);
-            }else
+            } else
             {
                 $li.append("<a></a>");
                 $li.find("a")
@@ -90,7 +123,11 @@ define(function(){
                         App.Modules.UI.initContentType(link);
                         //When click the right
                         App.Modules.UI.initContentView('list');
-                        App.Modules.Communication.getList(link.toLowerCase(), null);
+                        if(link.toLowerCase()=='tasks'){
+                            App.Modules.Communication.getList(link.toLowerCase(), 'gunttview');
+                        } else{
+                            App.Modules.Communication.getList(link.toLowerCase(), null);
+                        }
                         return false;
                     });
             }
@@ -120,9 +157,10 @@ define(function(){
 			curElement: null
 			
 		},
+
 		initContentData: function(data){
 			this.Content.index = App.Libs.KO.observable(0);
-			this.Content.data = App.Libs.KO.observableArray(data);
+			this.Content.data = App.Libs.KO.observableArray(convertToTaskArray(data));
 			this.Content.curElement = App.Libs.KO.computed(function(){
 				return this.data.peek()[this.index()];
 			}, this.Content);
@@ -173,9 +211,11 @@ define(function(){
 					$("a." + App.ID.changeCVClass).removeClass('selected');
 					$(this).addClass('selected');
 
-                    if(viewType == 'gantt'){
+                   /* if(viewType == 'gantt'){
                         App.Modules.Communication.getList(App.Modules.UI.Content.type.toLowerCase(), 'gunttview');
-                    }
+                    }*/
+                    var cur = App.Modules.UI.Content.curElement.peek();
+                    console.log();
                     App.Modules.UI.initContentView(viewType);
 					App.Modules.UI.displayContent();
 					App.Modules.UI.displayViewPanel();
@@ -259,6 +299,7 @@ define(function(){
                 if(App.Modules.UI.Content.view == "gantt"){
 
                     var projectArray = App.Modules.UI.Content.data.peek();
+                    //var tasks = convertToTaskArray(projectArray);
                     if(!projectArray || projectArray.length == 0  ){
                         return;
                     }
@@ -268,6 +309,9 @@ define(function(){
                     ganttChart.create(App.ID.ganttViewHolder)
                 }
                 else {
+                    /*if(App.Modules.UI.Content.type.toLowerCase() == "tasks"){
+                        App.Modules.UI.initContentData(App.Modules.UI.Content.data.peek());
+                    }*/
                     App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
                     App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
                 }
