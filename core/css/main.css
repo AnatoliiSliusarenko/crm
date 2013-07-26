@@ -94,20 +94,11 @@ input, select {
 }
 @font-face {
 	font-family: 'Segoe UI';
-	/* IE8 HACK: объявление EOT должно идти первым, содержать ?# и заключено в единичные кавычки */
-	src:/* url("../fonts/segoeui.eot?#iefix") format('embedded-opentype'),
-		local('Segoe UI'),*/
-		url("../fonts/segoeui.woff") format('woff')/*,
-		url("../fonts/segoeui.ttf") format('truetype'),
-		url("../fonts/segoeui.svg#SegoeUI") format('svg')*/;
+	src:url("../fonts/segoeui.woff") format('woff');
 }
 @font-face {
 	font-family: 'Segoe UI Light';
-	src: /*url("../fonts/segoeuil.eot?#iefix") format('embedded-opentype'),
-		local('Segoe UI Light'),*/
-		url("../fonts/segoeuil.woff") format('woff')/*,
-		url("../fonts/segoeuil.ttf") format('truetype'),
-		url("../fonts/segoeuil.svg#SegoeUI-Light") format('svg')*/;
+	src:url("../fonts/segoeuil.woff") format('woff');
 }
 @font-face {
 	font-family: 'Icons';
