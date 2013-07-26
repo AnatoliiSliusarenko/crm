@@ -86,18 +86,7 @@ define(function(){
             		}
             	}		
 			});
-		},
-		getList: function(dataType, dataid){
-            var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
-				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
-	
-			if ((hash == false) || (uid == false))
-			{
-				App.Modules.UI.initLoginPage();
-				return;
-			}
 			
-			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType, "dataid":dataid});
 			this.socket.on('responseGetList', function(response){
 				switch(response.result.status)
             	{
@@ -118,6 +107,19 @@ define(function(){
             		}
             	}		
 			});
+		},
+		getList: function(dataType, dataid){
+            var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+	
+			if ((hash == false) || (uid == false))
+			{
+				App.Modules.UI.initLoginPage();
+				return;
+			}
+			
+			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType, "dataid":dataid});
+			
 		},
 		login: function(login, password){
 			this.socket.emit('login', {"ulogin": login, "upass": password});			
