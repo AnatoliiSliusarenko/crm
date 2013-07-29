@@ -105,8 +105,10 @@ define(function(){
                     .bind('click', function(event){
                         var link = $(event.target).attr('data-link');
                         $('#' + App.ID.leftMenu).find('li').removeClass('selected');
+                        $('.btn-list > li').removeClass('selected');
                         $(this).parent().addClass('selected');
                         $('#listBtn').parent().addClass('selected');
+
                         App.Modules.UI.initContentType(link);
                         //When click the right
                         App.Modules.UI.initContentView('list');
@@ -183,7 +185,8 @@ define(function(){
                     'plannedtime':  calculateTaskHours(project.info.StartDate, project.info.EndDate),
                     'timespent':  calculateTaskHours(project.info.StartDate, new Date()),
                     'progress': '%',
-                    'status': 'In Progress'
+                    'status': 'In Progress',
+                    'taskCount': project.task.tasks.length
                 });
             });
             return projects;
@@ -343,23 +346,23 @@ define(function(){
 		displayViewPanel: function(){
 			if (this.Content.view != "form")
 			{
-				$("#" + App.ID.rightBtn).css("display", "none");
-				$("#" + App.ID.leftBtn).css("display", "none");
+				$("#" + App.ID.rightBtn).parent().css("display", "none");
+				$("#" + App.ID.leftBtn).parent().css("display", "none");
 			}else
 			{
 				if (this.Content.index() == 0)
 				{
-					$("#" + App.ID.rightBtn).css("display", "block");
-					$("#" + App.ID.leftBtn).css("display", "none");
+					$("#" + App.ID.rightBtn).parent().css("display", "block");
+					$("#" + App.ID.leftBtn).parent().css("display", "none");
 				}else
 				if (this.Content.index() == this.Content.data.peek().length - 1)
 				{
-					$("#" + App.ID.rightBtn).css("display", "none");
-					$("#" + App.ID.leftBtn).css("display", "block");
+					$("#" + App.ID.rightBtn).parent().css("display", "none");
+					$("#" + App.ID.leftBtn).parent().css("display", "block");
 				}else
 				{
-					$("#" + App.ID.rightBtn).css("display", "block");
-					$("#" + App.ID.leftBtn).css("display", "block");
+					$("#" + App.ID.rightBtn).parent().css("display", "block");
+					$("#" + App.ID.leftBtn).parent().css("display", "block");
 				}
 			}
 		}
