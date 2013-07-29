@@ -83,23 +83,7 @@ define(function(){
 		}
 	}
 
-    function convertToTaskArray(data){
-        var tasks = [];
-        data.forEach(function(project){
-            project.task.tasks.forEach(function(task){
-                tasks.push({
-                    'summary':task.summary,
-                    'projectname':project.projectname,
-                    'assignedto':task.assignedto,
-                    'stage':'Unknown Stage',
-                    'StartDate': new Date(task.extrainfo.StartDate).format("dd/mm/yy hh:mm:ss"),
-                    'EndDate': new Date(task.extrainfo.EndDate).format("dd/mm/yy hh:mm:ss"),
-                    'progress':'Unknown progress'
-                });
-            });
-        });
-        return tasks;
-    }
+
 	
 	function displayMMItems(destItem, childItems){
         var $ul = destItem.append("<ul></ul>").find("ul");
@@ -120,6 +104,9 @@ define(function(){
                     .text(childItems[ind].title)
                     .bind('click', function(event){
                         var link = $(event.target).attr('data-link');
+                        $('#' + App.ID.leftMenu).find('li').removeClass('selected');
+                        $(this).parent().addClass('selected');
+                        $('#listBtn').parent().addClass('selected');
                         App.Modules.UI.initContentType(link);
                         //When click the right
                         App.Modules.UI.initContentView('list');
@@ -160,12 +147,47 @@ define(function(){
 
 		initContentData: function(data){
 			this.Content.index = App.Libs.KO.observable(0);
-			this.Content.data = App.Libs.KO.observableArray(convertToTaskArray(data));
+            this.Content.data = App.Libs.KO.observableArray(data);
 			this.Content.curElement = App.Libs.KO.computed(function(){
 				return this.data.peek()[this.index()];
 			}, this.Content);
 			this.displayViewPanel();
 		},
+
+        TasksConvert:  function (data){
+            var tasks = [];
+            data.forEach(function(project){
+                project.task.tasks.forEach(function(task){
+                    tasks.push({
+                        'summary':task.summary,
+                        'projectname':project.projectname,
+                        'assignedto':task.assignedto,
+                        'stage':'Unknown Stage',
+                        'StartDate': new Date(task.extrainfo.StartDate).format("dd/mm/yy hh:mm:ss"),
+                        'EndDate': new Date(task.extrainfo.EndDate).format("dd/mm/yy hh:mm:ss"),
+                        'progress':'Unknown progress'
+                    });
+                });
+            });
+            return tasks;
+        },
+        ProjectsConvert:  function (data){
+            var projects = [];
+            data.forEach(function(project){
+                projects.push({
+                    'projectname':project.projectname,
+                    'projectmanager':project.projectmanager,
+                    'customer':project.customer,
+                    'StartDate':project.info.StartDate,
+                    'EndDate':project.info.EndDate,
+                    'plannedtime':  calculateTaskHours(project.info.StartDate, project.info.EndDate),
+                    'timespent':  calculateTaskHours(project.info.StartDate, new Date()),
+                    'progress': '%',
+                    'status': 'In Progress'
+                });
+            });
+            return projects;
+        },
 		initContentType: function(type){
 			this.Content.type = type;
 		},
@@ -208,14 +230,10 @@ define(function(){
 						return false;
 					}
 					var viewType = $(this).attr('data-view-type');
-					$("a." + App.ID.changeCVClass).removeClass('selected');
-					$(this).addClass('selected');
+					$("a." + App.ID.changeCVClass).parent().removeClass('selected');
+					$(this).parent().addClass('selected');
 
-                   /* if(viewType == 'gantt'){
-                        App.Modules.Communication.getList(App.Modules.UI.Content.type.toLowerCase(), 'gunttview');
-                    }*/
-                    var cur = App.Modules.UI.Content.curElement.peek();
-                    console.log();
+                    App.Modules.Communication.getList(App.Modules.UI.Content.type.toLowerCase(), 'gunttview');
                     App.Modules.UI.initContentView(viewType);
 					App.Modules.UI.displayContent();
 					App.Modules.UI.displayViewPanel();
@@ -297,9 +315,7 @@ define(function(){
 			
 			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
                 if(App.Modules.UI.Content.view == "gantt"){
-
                     var projectArray = App.Modules.UI.Content.data.peek();
-                    //var tasks = convertToTaskArray(projectArray);
                     if(!projectArray || projectArray.length == 0  ){
                         return;
                     }
@@ -312,6 +328,9 @@ define(function(){
                     /*if(App.Modules.UI.Content.type.toLowerCase() == "tasks"){
                         App.Modules.UI.initContentData(App.Modules.UI.Content.data.peek());
                     }*/
+                    var type = App.Modules.UI.Content.type;
+                    var data = App.Modules.UI.Content.data.peek();
+                    App.Modules.UI.initContentData(App.Modules.UI[type + "Convert"](data));
                     App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
                     App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
                 }

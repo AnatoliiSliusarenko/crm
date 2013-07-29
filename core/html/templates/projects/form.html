@@ -11,8 +11,8 @@
 		Current element: <h1 data-bind="text: index() + 1">
 		</h1>
 		<hr>
-	
-			<div style="background-color: #999999; 
+
+        <div style="background-color: #999999;
 						padding: 5px; 
 						width: 400px; 
 						height: 400px; 
@@ -21,8 +21,16 @@
 						border: 1px solid black;
 						margin: 0px auto;
 						z-index: -10;">
-				<h3 data-bind="text: curElement().projectname"></h3>
-			</div>
+            <span>Project Name:</span><span data-bind="text: curElement().projectname"></span>
+            <span>Project Manager:</span><span data-bind="text: curElement().projectmanager"></span>
+            <span>Customer:</span><span data-bind="text: curElement().customer"></span>
+            <span>Start Date:</span><span data-bind="text: curElement().StartDate"></span>
+            <span>End Date:</span><span data-bind="text: curElement().EndDate"></span>
+            <span>Time Spent:</span><span data-bind="text: curElement().timespent"></span>
+            <span>Progress:</span><span data-bind="text: curElement().progress"></span>
+            <span>Status:</span><span data-bind="text: curElement().status"></span>
+
+        </div>
 		
 	</div>
 </body>
