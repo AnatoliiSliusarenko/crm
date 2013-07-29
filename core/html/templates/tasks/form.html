@@ -6,28 +6,29 @@
 </head>
 <body>
 	<div id="wrapper">
+	<div class="form-holder">
 		<h1>This is Task Form template</h1>
 		<hr>
-		Current element: <h1 data-bind="text: index() + 1">
-		</h1>
+		Current element: <h1 data-bind="text: index() + 1">		</h1>
 		<hr>
-	
-			<div style="background-color: #999999; 
-						padding: 5px; 
-						width: 400px; 
-						height: 400px; 
-						display: block; 
-						position: relative; 
-						border: 1px solid black;
-						margin: 0px auto;
-						z-index: -10;">
-                <span>Task:</span><span data-bind="text: curElement().summary"></span>
-                <span>Project:</span><span data-bind="text: curElement().projectname"></span>
-                <span>Assigned to:</span><span data-bind="text: curElement().assignedto"></span>
-                <span>Project Stage:</span><span data-bind="text: curElement().stage"></span>
-                <span>Assigned to:</span><span data-bind="text: curElement().assignedto"></span>
+			<div class="form">
+                <h1 data-bind="text: curElement().summary"></h1>
+                <div class="mgb20">
+	                <div class="left block half">
+	                	<p><span class="bold left block half border-right">Project:</span><span class="block left" data-bind="text: curElement().projectname"></span></p>
+	                	<p><span class="bold left block half border-right">Assigned to:</span><span class="block left" data-bind="text: curElement().assignedto"></span></p>
+	                </div>
+	                <div class="left block half">
+	                	<p><span class="bold left block half border-right">Project Stage:</span><span class="block left" data-bind="text: curElement().stage"></span></p>
+	                	<p><span class="bold left block half border-right">Assigned to:</span><span class="block left" data-bind="text: curElement().assignedto"></span></p>
+				    </div>
+				    <div class="clearfix"></div>
+			    </div>
+			    <div>
+			   		 <span>Description</span>
+			    </div>
 			</div>
-		
+	</div>
 	</div>
 </body>
 </html>
