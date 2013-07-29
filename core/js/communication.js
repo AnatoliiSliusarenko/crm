@@ -99,6 +99,10 @@ define(function(){
             			App.Modules.UI.displayContent();
             			break;
             		}
+                    case "4":
+                        console.log(response.result.description);
+                        App.Modules.UI.initLoginPage();
+                        break;
             		default:
             		{
             			console.log('responseGetList BAD');
