@@ -468,3 +468,27 @@ clear: both;
 .clearfix { 
 zoom: 1; 
 }
+.thumbnail{
+	float:left;
+	margin-top: 4px;
+	margin-left:4px;
+position: relative;
+display: block;
+background: white;
+border: 1px solid rgba(0, 0, 0, 0.16);
+border-bottom-color: rgba(0, 0, 0, 0.3);
+padding: 5px;
+display: block;
+-webkit-transition: -webkit-transform, -webkit-box-shadow, border 200ms linear;
+-moz-border-radius: 4px;
+-webkit-border-radius: 4px;
+border-radius: 4px;
+width: 220px;
+min-height: 160px;
+}
+.thumbnail p,.thumbnail span{
+	font-family: "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
+color: #4c4c4c;
+font-size: 13px;
+text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+}

@@ -19,7 +19,7 @@ define(function(){
     function createGanttChart(projectArray, withTasks){
         var ganttChartControl = new GanttChart();
         //chart settings
-        ganttChartControl.setImagePath("/crm/crm/core/images/");
+        ganttChartControl.setImagePath("/crm/core/images/");
         ganttChartControl.setEditable(true);
         ganttChartControl.showTreePanel(true);
         ganttChartControl.showContextMenu(true);
