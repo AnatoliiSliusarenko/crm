@@ -2,7 +2,7 @@
 var App = App || 
 {
 	Server: {
-		ip: "192.168.88.45",
+		ip: "192.168.88.109",
 		port: "8088"
 	},
 	ID: {
@@ -22,7 +22,8 @@ var App = App ||
 		formBtn: "formBtn",
 		userPanel: "loginPanel",
 		changeCVClass: "changeContentView",
-		changeCIClass: "changeContentIndex"
+		changeCIClass: "changeContentIndex",
+        createBtn:"#top-bar-createBtn"
 
 	},
 	URL: {
@@ -38,7 +39,9 @@ var App = App ||
 	Modules: {
 		UI: {},
 		LocalStorage: {},
-		Communication: {}
+		Communication: {},
+        Utils: {},
+        Validation: {}
 	},
 	InitApp: function(){
 		this.Modules.Communication.initConnection();
@@ -48,7 +51,7 @@ var App = App ||
 
 
 //include modules and libraries
-requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "../../libraries/knockout-2.3.0", "communication"], function(classesContent, uiContent, localstorageContent, ioContent, knockoutContent, communicationContent){
+requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "../../libraries/knockout-2.3.0", "communication", "utilities", "validation"], function(classesContent, uiContent, localstorageContent, ioContent, knockoutContent, communicationContent, utilitiesContent, validationContent){
 	App.Classes = classesContent;
 
 	App.Libs.IO = ioContent;
@@ -57,6 +60,8 @@ requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "../../
 	App.Modules.UI = uiContent;
 	App.Modules.LocalStorage = localstorageContent;
 	App.Modules.Communication = communicationContent;
-		
-	App.InitApp();
+    App.Modules.Utils = utilitiesContent;
+    App.Modules.Validation = validationContent;
+
+    App.InitApp();
 });

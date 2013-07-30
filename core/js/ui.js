@@ -3,19 +3,6 @@ define(function(){
 		$("#" + destID).empty();
 		$("#" + destID).load(resURL + " #" + resID, callback);
 	}
-
-    function calculateTaskHours(startDate,endDate){
-        if(!startDate || !endDate){
-            return 0;
-        }
-        if(startDate > endDate){
-            return 0;
-        }
-        var delta = new Date(endDate) - new Date(startDate);
-        var hours = Math.floor(((delta/1000)/60)/60);
-        return hours;
-    }
-
     function createGanttChart(projectArray, withTasks){
         var ganttChartControl = new GanttChart();
         //chart settings
@@ -32,7 +19,7 @@ define(function(){
                     var startDate = new Date(project.info.StartDate);
                     var newProject = new GanttProjectInfo(project._id, project.projectname, startDate);
                     project.task.tasks.forEach(function(task){
-                        var hourCount = calculateTaskHours(task.extrainfo.StartDate, task.extrainfo.EndDate);
+                        var hourCount = App.Modules.Utils.calculateHours(task.extrainfo.StartDate, task.extrainfo.EndDate);
                         var percentCompleted = Math.floor(Math.random()*100+1);
                         var parentTask = new GanttTaskInfo(task._id, task.summary, new Date(task.extrainfo.StartDate), hourCount, percentCompleted, "");//Predecessor and this task will be joined by dependency line in the Gantt Chart.
                         newProject.addTask(parentTask);
@@ -43,14 +30,13 @@ define(function(){
             });
         } else {
             ganttChartControl.showDescProject(false,'n,d');
-            var dateArray = $.makeArray(projectArray);
-            var arr = $.map(dateArray,function(val, i){
+            var arr = $.map(projectArray,function(val, i){
                 return val.info.StartDate;
             });
             var date = findMinDate(arr);
             var newProject = new GanttProjectInfo(1, 'Guntt View', date);
             projectArray.forEach(function(project){
-                var hourCount = calculateTaskHours(project.info.StartDate,project.info.EndDate);
+                var hourCount = App.Modules.Utils.calculateHours(project.info.StartDate,project.info.EndDate);
                 var percentCompleted = Math.floor(Math.random()*100+1);
                 var parentTask = new GanttTaskInfo(project._id, project.projectname, new Date(project.info.StartDate), hourCount,percentCompleted,"");
                 newProject.addTask(parentTask);
@@ -153,50 +139,47 @@ define(function(){
 			this.displayViewPanel();
 		},
 
-        TasksConvert:  function (data){
-            var tasks = [];
-            data.forEach(function(project){
-                if(project.task.tasks.length > 0){
-                    project.task.tasks.forEach(function(task){
-                        tasks.push({
-                            'summary':task.summary,
-                            'projectname':project.projectname,
-                            'assignedto':task.assignedto.uname,
-                            'stage':'Unknown Stage',
-                            'StartDate': new Date(task.extrainfo.StartDate).format("dd/mm/yy hh:mm:ss"),
-                            'EndDate': new Date(task.extrainfo.EndDate).format("dd/mm/yy hh:mm:ss"),
-                            'progress':'Unknown progress'
-                        });
-                    });
-                }
 
-            });
-            return tasks;
-        },
-        ProjectsConvert:  function (data){
-            var projects = [];
-            data.forEach(function(project){
-                projects.push({
-                    'projectname':project.projectname,
-                    'projectmanager':project.projectmanager,
-                    'customer':project.customer,
-                    'StartDate':project.info.StartDate,
-                    'EndDate':project.info.EndDate,
-                    'plannedtime':  calculateTaskHours(project.info.StartDate, project.info.EndDate),
-                    'timespent':  calculateTaskHours(project.info.StartDate, new Date()),
-                    'progress': '%',
-                    'status': 'In Progress',
-                    'taskCount': project.task.tasks.length
-                });
-            });
-            return projects;
-        },
 		initContentType: function(type){
 			this.Content.type = type;
 		},
 		initContentView: function(view){
 			this.Content.view = view;
 		},
+        displayProjectCreateForm:function(){
+            var url = App.URL.templateFolder + App.Modules.UI.Content.type.toLowerCase() + "/" + "createProject.html";
+            loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
+                $('#createProjectForm').on('submit',function(e){
+                    e.preventDefault();
+                    var data = {
+                        'projectname':$('#projectNameInput').val(),
+                        'task':{
+                            'available': $('#withTasks').is(':checked'),
+                            'tasks':[]
+                        },
+                        'privacy':$('#privacyDD option:selected').text(),
+                        'customer':"Customer",
+                        'projectmanager':{
+                            'uid': '51ecf7b78f168f043a000001',
+                            'uname': 'Roma Buchuk'
+                        },
+
+                        'workflow':null,
+                        'teams':{
+                            'users':[],
+                            'Teams':[]
+                        },
+                        'info':{
+                            'StartDate': new Date(),
+                            'EndDate': new Date(),
+                            'sequence':0,
+                            'parent': null
+                        }
+                    };
+                    App.Modules.Communication.create(data);
+                });
+            });
+        },
 		changeContentIndex: function(shift){
 			var newIndex = this.Content.index() + shift;
 			if (newIndex < 0) {
@@ -224,7 +207,11 @@ define(function(){
 		},
 		initMainPage: function(){
 			loadContent(App.ID.pageHolder, App.URL.main, App.ID.contentResource, function(){	
-				App.Modules.Communication.getModules();
+				$(App.ID.createBtn).css('display', 'none');
+                $(App.ID.createBtn).on('click',function(){
+                    App.Modules.UI.displayProjectCreateForm();
+                });
+                App.Modules.Communication.getModules();
 				App.Modules.UI.displayUserPanel();
 				App.Modules.UI.initContentData([]);
 				$("a." + App.ID.changeCVClass).click(function(){
@@ -278,7 +265,7 @@ define(function(){
 							
 				$li.bind('click', function(){
 					var link = $(this).find('a').attr('data-link');
-					
+                    link.toLowerCase() == 'project' ? $(App.ID.createBtn).css('display','inline') : $(App.ID.createBtn).css('display','none');
 					for (ind in App.Modules.UI.modulesMenu)
 					{
 						if (App.Modules.UI.modulesMenu[ind].link == link)
@@ -334,7 +321,11 @@ define(function(){
                     }*/
                     var type = App.Modules.UI.Content.type;
                     var data = App.Modules.UI.Content.data.peek();
-                    App.Modules.UI.initContentData(App.Modules.UI[type + "Convert"](data));
+                    var functionName = type + "Convert";
+                    if(typeof(App.Modules.Utils[functionName]) == "function")
+                    {
+                        App.Modules.UI.initContentData(App.Modules.Utils[functionName](data));
+                    }
                     App.Libs.KO.cleanNode(document.getElementById(App.ID.contentHolder));
                     App.Libs.KO.applyBindings(App.Modules.UI.Content, document.getElementById(App.ID.contentHolder));
                 }

@@ -94,7 +94,7 @@ define(function(){
             		{
             			console.log('responseGetList OK');
             			App.Modules.UI.initContentData(response.data);
-            			console.log(App.Modules.UI.Content.data.peek());
+            			//console.log(App.Modules.UI.Content.data.peek());
             			//App.Modules.UI.initContentType('...');
             			//App.Modules.UI.initContentView('...');
             			App.Modules.UI.displayContent();
@@ -112,6 +112,32 @@ define(function(){
             		}
             	}		
 			});
+
+            this.socket.on('responseCreate', function(response){
+                switch(response.result.status)
+                {
+                    case "0":
+                    {
+                        console.log('responseGetList OK');
+                        App.Modules.UI.initContentData(response.data);
+                        //console.log(App.Modules.UI.Content.data.peek());
+                        //App.Modules.UI.initContentType('...');
+                        //App.Modules.UI.initContentView('...');
+                        App.Modules.UI.displayContent();
+                        break;
+                    }
+                    case "4":
+                        console.log(response.result.description);
+                        App.Modules.UI.initLoginPage();
+                        break;
+                    default:
+                    {
+                        console.log('responseCreate' + response.result.description);
+
+                        break;
+                    }
+                }
+            });
 		},
 		getList: function(dataType, dataid){
             var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
@@ -162,6 +188,23 @@ define(function(){
             
             this.socket.emit('createUser', data);
 		},
+        create: function(formData){
+            var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+                uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+            if ((hash == false) || (uid == false))
+            {
+                App.Modules.UI.initLoginPage();
+                return;
+            }
+            var data = {};
+            data.hash = hash;
+            data.uid = uid;
+            data.mid = 40;
+            data.datatype = "project";
+            data.content = formData;
+            this.socket.emit('create',data);
+        },
+
 		getModules: function(){
 			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
@@ -174,17 +217,5 @@ define(function(){
 			
 			this.socket.emit('getModules', {"hash": hash, "uid": uid});
 		}
-		/*getList: function(dataType, dataview){
-			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
-				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
-	
-			if ((hash == false) || (uid == false)) 
-			{
-				App.Modules.UI.initLoginPage();
-				return;
-			}
-			
-			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType, "dataview":dataview});
-		}*/
 	}
 });
