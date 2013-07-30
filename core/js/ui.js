@@ -19,7 +19,7 @@ define(function(){
     function createGanttChart(projectArray, withTasks){
         var ganttChartControl = new GanttChart();
         //chart settings
-        ganttChartControl.setImagePath("/crm/core/images/");
+        ganttChartControl.setImagePath("/crm/crm/core/images/");
         ganttChartControl.setEditable(true);
         ganttChartControl.showTreePanel(true);
         ganttChartControl.showContextMenu(true);
@@ -68,13 +68,13 @@ define(function(){
                 minDate = date;
             }
         });
-        return minDate;
+        return new Date(minDate);
     }
 
 	function addChildren(destItem, childItems){
 		for (ind in childItems)
 		{
-			var newMMItem = new App.Classes.ModuleMenuItem(childItems[ind].cname, childItems[ind].cname, false);
+			var newMMItem = new App.Classes.ModuleMenuItem(childItems[ind].cname, childItems[ind].cname, false,childItems[ind].mid);
 			
 			if (childItems[ind].children != [])
 				addChildren(newMMItem, childItems[ind].children);
@@ -101,6 +101,7 @@ define(function(){
                 $li.find("a")
                     .attr("data-link", childItems[ind].link)
                     .attr("href", "#")
+                    .attr('id', childItems[ind].id)
                     .text(childItems[ind].title)
                     .bind('click', function(event){
                         var link = $(event.target).attr('data-link');
@@ -112,11 +113,7 @@ define(function(){
                         App.Modules.UI.initContentType(link);
                         //When click the right
                         App.Modules.UI.initContentView('list');
-                        if(link.toLowerCase()=='tasks'){
-                            App.Modules.Communication.getList(link.toLowerCase(), 'gunttview');
-                        } else{
-                            App.Modules.Communication.getList(link.toLowerCase(), null);
-                        }
+                        App.Modules.Communication.getList(link.toLowerCase(), link.toLowerCase()=='tasks' ? 'gunttview' : null);
                         return false;
                     });
             }
@@ -159,17 +156,20 @@ define(function(){
         TasksConvert:  function (data){
             var tasks = [];
             data.forEach(function(project){
-                project.task.tasks.forEach(function(task){
-                    tasks.push({
-                        'summary':task.summary,
-                        'projectname':project.projectname,
-                        'assignedto':task.assignedto,
-                        'stage':'Unknown Stage',
-                        'StartDate': new Date(task.extrainfo.StartDate).format("dd/mm/yy hh:mm:ss"),
-                        'EndDate': new Date(task.extrainfo.EndDate).format("dd/mm/yy hh:mm:ss"),
-                        'progress':'Unknown progress'
+                if(project.task.tasks.length > 0){
+                    project.task.tasks.forEach(function(task){
+                        tasks.push({
+                            'summary':task.summary,
+                            'projectname':project.projectname,
+                            'assignedto':task.assignedto.uname,
+                            'stage':'Unknown Stage',
+                            'StartDate': new Date(task.extrainfo.StartDate).format("dd/mm/yy hh:mm:ss"),
+                            'EndDate': new Date(task.extrainfo.EndDate).format("dd/mm/yy hh:mm:ss"),
+                            'progress':'Unknown progress'
+                        });
                     });
-                });
+                }
+
             });
             return tasks;
         },
@@ -236,9 +236,10 @@ define(function(){
 					$("a." + App.ID.changeCVClass).parent().removeClass('selected');
 					$(this).parent().addClass('selected');
 
-                    App.Modules.Communication.getList(App.Modules.UI.Content.type.toLowerCase(), 'gunttview');
                     App.Modules.UI.initContentView(viewType);
-					App.Modules.UI.displayContent();
+                    var type = App.Modules.UI.Content.type;
+                    App.Modules.Communication.getList(type.toLowerCase(), type.toLowerCase()=='tasks' ? 'gunttview' : null);
+					//App.Modules.UI.displayContent();
 					App.Modules.UI.displayViewPanel();
 					
 					return false;

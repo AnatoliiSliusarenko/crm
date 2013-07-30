@@ -94,6 +94,7 @@ define(function(){
             		{
             			console.log('responseGetList OK');
             			App.Modules.UI.initContentData(response.data);
+            			console.log(App.Modules.UI.Content.data.peek());
             			//App.Modules.UI.initContentType('...');
             			//App.Modules.UI.initContentView('...');
             			App.Modules.UI.displayContent();

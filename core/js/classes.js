@@ -10,11 +10,12 @@ define(function(){
 				this.structure.push(mmItem);
 			}
 		},
-		ModuleMenuItem: function(title, link, selected){
+		ModuleMenuItem: function(title, link, selected, id){
 			if (link === "undefined") link = "#";
 			
 			this.title = title;
 			this.link = link;
+            this.id = id;
 			this.selected = selected;
 			this.children = [];
 			
