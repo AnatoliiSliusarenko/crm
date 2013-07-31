@@ -6,21 +6,10 @@
 </head>
 <body>
 	<div id="wrapper">
-		<h1>This is Project Thumbnails template:</h1>
-		<hr>
 		<div data-bind="foreach: data">
-			<div style="background-color: #999999; 
-						padding: 5px; 
-						width: 200px; 
-						height: 200px; 
-						display: inline-block; 
-						position: relative; 
-						border: 1px solid red;
-						margin: 5px;
-						z-index: -10;">
-				
-				<span data-bind="text: projectname"></span>
-				<span data-bind="text: taskCount"></span> Tasks
+			<div class="thumbnail">
+				<h2 data-bind="text: projectname"></h2>
+				<p><span data-bind="text: taskCount"></span> tasks</p>
 			</div>
 		</div>
 	</div>

@@ -6,32 +6,25 @@
 </head>
 <body>
 	<div id="wrapper">
-		<h1>This is Project Form template</h1>
-		<hr>
-		Current element: <h1 data-bind="text: index() + 1">
-		</h1>
-		<hr>
-
-        <div style="background-color: #999999;
-						padding: 5px; 
-						width: 400px; 
-						height: 400px; 
-						display: block; 
-						position: relative; 
-						border: 1px solid black;
-						margin: 0px auto;
-						z-index: -10;">
-            <span>Project Name:</span><span data-bind="text: curElement().projectname"></span>
-            <span>Project Manager:</span><span data-bind="text: curElement().projectmanager"></span>
-            <span>Customer:</span><span data-bind="text: curElement().customer"></span>
-            <span>Start Date:</span><span data-bind="text: curElement().StartDate"></span>
-            <span>End Date:</span><span data-bind="text: curElement().EndDate"></span>
-            <span>Time Spent:</span><span data-bind="text: curElement().timespent"></span>
-            <span>Progress:</span><span data-bind="text: curElement().progress"></span>
-            <span>Status:</span><span data-bind="text: curElement().status"></span>
-
-        </div>
+	<div class="form-holder">
 		
+		Current element: <span data-bind="text: index() + 1"></span>
+	        <div class=form>
+	         <h1 data-bind="text: curElement().projectname"></h1>
+	         <div class="left block half">
+	           <p><span class="bold left block half border-right">Project Manager:</span><span class="block left" data-bind="text: curElement().projectmanager"></span></p>
+	           <p><span class="bold left block half border-right">Customer:</span><span class="block left" data-bind="text: curElement().customer"></span></p>
+	           <p><span class="bold left block half border-right">Start Date:</span><span class="block left" data-bind="text: curElement().StartDate"></span></p>
+	           <p><span class="bold left block half border-right">End Date:</span><span class="block left" data-bind="text: curElement().EndDate"></span></p>
+	          </div>
+	          <div class="left block half">
+	            <p><span class="bold left block half border-right">Time Spent:</span><span class="block left" data-bind="text: curElement().timespent"></span></p>
+	            <p><span class="bold left block half border-right">Progress:</span><span class="block left" data-bind="text: curElement().progress"></span></p>
+	            <p><span class="bold left block half border-right">Status:</span><span class="block left" data-bind="text: curElement().status"></span></p>
+			  </div>
+			  <div class="clearfix"></div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

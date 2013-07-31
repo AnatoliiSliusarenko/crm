@@ -6,12 +6,23 @@
 </head>
 <body>
 	<div id="wrapper">
-		<h1>This is Users List template:</h1>
-		<hr>
+		<table class="list">
+		  <thead>
+                <tr>
+                    <th>Login</th>
+                    <th>e-mail</th>
+                </tr>
+            </thead>
+              <tbody data-bind="foreach:data">
+                <tr>
+                    <td data-bind="text: ulogin"></td>
+                    <td data-bind="text: uemail"></td>
+            
+                </tr>
+            </tbody>
 		<div data-bind="foreach: data">
-			<h3 data-bind="text: ulogin"></h3>
-			<h3 data-bind="text: uemail"></h3>
-			<hr>
+			
+		</div>
 		</div>
 	</div>	
 </body>
