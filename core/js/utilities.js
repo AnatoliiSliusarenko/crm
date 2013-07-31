@@ -49,10 +49,10 @@ define(function(){
             data.forEach(function(project){
                 projects.push({
                     'projectname':project.projectname,
-                    'projectmanager':project.projectmanager,
-                    'customer':project.customer,
-                    'StartDate':new Date(project.info.StartDate).format("dd/mm/yy hh:mm:ss"),
-                    'EndDate':new Date(project.info.EndDate).format("dd/mm/yy hh:mm:ss"),
+                    'projectmanager':project.projectmanager.uname || 'No name',
+                    'customer':project.customer || 'Unknown',
+                    'StartDate':project.info.StartDate,
+                    'EndDate':project.info.EndDate,
                     'plannedtime':  calculateHours(project.info.StartDate, project.info.EndDate),
                     'timespent':  calculateHours(project.info.StartDate, new Date()),
                     'progress': '%',

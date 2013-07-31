@@ -7,10 +7,10 @@
 <div id="wrapper">
       <div>
           <form method="post" action="" id="createProjectForm">
-              <legend>Create Project</legend>
+              <legend>Create Task</legend>
               <fieldset>
                   <div>
-                      <label for="projectNameInput">Project Name</label>
+                      <label for="projectNameInput">Task Name</label>
                       <input type="text" name="projectname" id="projectNameInput" required/>
                   </div>
 
@@ -31,10 +31,8 @@
 
                   <div>
                       <label for="projectManagerDD">Project Manager</label>
-                      <select id="projectManagerDD">
-                          <option>Administrator</option>
-                          <option>Demo User</option>
-                          <option>Demo Portal User</option>
+                      <select data-bind="options: users, optionsText: 'uname', optionsValue:'_id'" id="projectManagerDD">
+
                       </select>
                   </div>
               </fieldset>

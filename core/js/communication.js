@@ -2,11 +2,10 @@ define(function(){
 	return {
 		socket: {},
 		initConnection: function(){
-			this.socket = App.Libs.IO.connect('http://' + App.Server.ip + ':' + App.Server.port);
-			
+			this.socket = App.Libs.IO.connect('http://'.concat(App.Server.ip,':',App.Server.port));
+
 			this.socket.on('connect', function(){
 				console.log('Server connected...');
-				//App.Modules.Communication.createUser(null);
 			});
 			
 			this.socket.on('disconnect', function(){
@@ -18,7 +17,7 @@ define(function(){
 				{
 					case "0":
 					{
-						console.log('responseLogin OK');
+						console.log('responseLogin: ' + response.result.description);
 						App.Modules.LocalStorage.saveToLocalStorage("hash", response.data.hash);
 						App.Modules.LocalStorage.saveToLocalStorage("uid", response.data.uid);
 
@@ -28,8 +27,7 @@ define(function(){
 					}
 					default:
 					{
-						console.log('responseLogin BAD');
-
+						console.log(response.result.description);
 						App.Modules.UI.showLoginAnswer("Incorrect login or password");
 						break;
 					}
@@ -93,7 +91,7 @@ define(function(){
             		case "0":
             		{
             			console.log('responseGetList OK');
-            			App.Modules.UI.initContentData(response.data);
+                        App.Modules.UI.initContentData(response.data);
             			//console.log(App.Modules.UI.Content.data.peek());
             			//App.Modules.UI.initContentType('...');
             			//App.Modules.UI.initContentView('...');
@@ -107,7 +105,6 @@ define(function(){
             		default:
             		{
             			console.log('responseGetList BAD');
-            			
             			break;
             		}
             	}		
@@ -138,7 +135,57 @@ define(function(){
                     }
                 }
             });
+
+            this.socket.on('responseGetUsersForDd', function(response){
+                switch(response.result.status)
+                {
+                    case "0":
+                    {
+                        console.log('usersForDD loaded');
+                        if(response.data.length> 0){
+                            App.Modules.UI.initCreateFormData(response.data);
+                            App.Libs.KO.cleanNode(document.getElementById("projectManagerDD"));
+                            App.Libs.KO.applyBindings(App.Modules.UI.CreateFormData, document.getElementById("projectManagerDD"));
+                        }else{
+
+                        }
+
+
+
+                        //console.log(App.Modules.UI.Content.data.peek());
+                        //App.Modules.UI.initContentType('...');
+                        //App.Modules.UI.initContentView('...');
+                        //App.Modules.UI.displayContent();
+                        break;
+                    }
+                    case "4":
+                        console.log(response.result.description);
+                        App.Modules.UI.initLoginPage();
+                        break;
+                    default:
+                    {
+                        console.log('responseCreate' + response.result.description);
+
+                        break;
+                    }
+                }
+            });
 		},
+
+        //get users for drop down list [{uname:'user1',uid:'25252'}]
+        getUsersForDd: function(){
+            var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+                uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+
+            if ((!hash) || (!uid))
+            {
+                App.Modules.UI.initLoginPage();
+                return;
+            }
+
+            this.socket.emit('getUsersForDd', {"hash": hash, "uid": uid, 'mid':39});
+        },
+
 		getList: function(dataType, dataid){
             var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
@@ -151,9 +198,11 @@ define(function(){
 			
 			this.socket.emit('getList', {"hash": hash, "uid": uid, "datatype": dataType, "dataid":dataid});
 		},
-		login: function(login, password){
-			this.socket.emit('login', {"ulogin": login, "upass": password});			
-		},
+
+        login: function(login, password){
+            this.socket.emit('login', {"ulogin": login, "upass": password});
+        },
+
 		checkHash: function(){	
 			var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
 				uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
@@ -188,7 +237,7 @@ define(function(){
             
             this.socket.emit('createUser', data);
 		},
-        create: function(formData){
+        createProject: function(formData){
             var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
                 uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
             if ((hash == false) || (uid == false))
@@ -202,7 +251,7 @@ define(function(){
             data.mid = 40;
             data.datatype = "project";
             data.content = formData;
-            this.socket.emit('create',data);
+            this.socket.emit('createProject',data);
         },
 
 		getModules: function(){

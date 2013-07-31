@@ -89,7 +89,7 @@ define(function(){
                     .attr("href", "#")
                     .attr('id', childItems[ind].id)
                     .text(childItems[ind].title)
-                    .bind('click', function(event){
+                    .on('click', function(event){
                         var link = $(event.target).attr('data-link');
                         $('#' + App.ID.leftMenu).find('li').removeClass('selected');
                         $('.btn-list > li').removeClass('selected');
@@ -127,10 +127,17 @@ define(function(){
 			view: "list",
 			index: null,
 			curElement: null
-			
 		},
+        CreateFormData: {
+            users: []
+        },
+
+        initCreateFormData:function(data){
+             this.CreateFormData.users = App.Libs.KO.observableArray(data);
+        },
 
 		initContentData: function(data){
+            this.Content.mid = App.Libs.KO.observable(0);
 			this.Content.index = App.Libs.KO.observable(0);
             this.Content.data = App.Libs.KO.observableArray(data);
 			this.Content.curElement = App.Libs.KO.computed(function(){
@@ -139,6 +146,9 @@ define(function(){
 			this.displayViewPanel();
 		},
 
+        initContentMid: function(id){
+            this.Content.mid = id;
+        },
 
 		initContentType: function(type){
 			this.Content.type = type;
@@ -146,9 +156,28 @@ define(function(){
 		initContentView: function(view){
 			this.Content.view = view;
 		},
-        displayProjectCreateForm:function(){
-            var url = App.URL.templateFolder + App.Modules.UI.Content.type.toLowerCase() + "/" + "createProject.html";
+        displayCreateForm:function(){
+            var type = App.Modules.UI.Content.type;
+            var url = App.URL.templateFolder + type.toLowerCase() + "/" + "create" + type.toLowerCase() + ".html";
             loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
+                App.Modules.Communication.getUsersForDd();
+
+                $(App.ID.managerSelect).on('click',function(){
+                    App.Modules.Communication.getUsersForDd();
+                    App.Libs.KO.cleanNode(document.getElementById("projectManagerDD"));
+                    App.Libs.KO.applyBindings(App.Modules.UI.CreateFormData, document.getElementById("projectManagerDD"));
+                });
+
+                $(App.ID.createBtnHolder).css('display','none');
+                $(App.ID.saveDiscardHolder).css('display','inline');
+                $(App.ID.discardBtn).on('click',function(){
+                    $(App.ID.createBtnHolder).css('display','inline');
+                    $(App.ID.saveDiscardHolder).css('display','none');
+
+                });
+
+
+
                 $('#createProjectForm').on('submit',function(e){
                     e.preventDefault();
                     var data = {
@@ -160,8 +189,8 @@ define(function(){
                         'privacy':$('#privacyDD option:selected').text(),
                         'customer':"Customer",
                         'projectmanager':{
-                            'uid': '51ecf7b78f168f043a000001',
-                            'uname': 'Roma Buchuk'
+                            'uid': $(App.ID.managerSelect + ' option:selected').val(),
+                            'uname': $(App.ID.managerSelect + ' option:selected').text()
                         },
 
                         'workflow':null,
@@ -176,8 +205,9 @@ define(function(){
                             'parent': null
                         }
                     };
-                    App.Modules.Communication.create(data);
+                    App.Modules.Communication.createProject(data);
                 });
+
             });
         },
 		changeContentIndex: function(shift){
@@ -207,10 +237,9 @@ define(function(){
 		},
 		initMainPage: function(){
 			loadContent(App.ID.pageHolder, App.URL.main, App.ID.contentResource, function(){	
-				$(App.ID.createBtn).css('display', 'none');
-                $(App.ID.createBtn).on('click',function(){
-                    App.Modules.UI.displayProjectCreateForm();
-                });
+				$(App.ID.saveDiscardHolder).css('display', 'none');
+				$(App.ID.createBtnHolder).css('display', 'none');
+
                 App.Modules.Communication.getModules();
 				App.Modules.UI.displayUserPanel();
 				App.Modules.UI.initContentData([]);
@@ -263,9 +292,9 @@ define(function(){
 				
 				if(this.modulesMenu[ind].selected == true) $li.addClass("selected");
 							
-				$li.bind('click', function(){
+				$li.on('click', function(){
 					var link = $(this).find('a').attr('data-link');
-                    link.toLowerCase() == 'project' ? $(App.ID.createBtn).css('display','inline') : $(App.ID.createBtn).css('display','none');
+                    //link.toLowerCase() == 'project' ? $(App.ID.createDiscardHolder).css('display','inline') : $(App.ID.createDiscardHolder).css('display','none');
 					for (ind in App.Modules.UI.modulesMenu)
 					{
 						if (App.Modules.UI.modulesMenu[ind].link == link)
@@ -285,10 +314,13 @@ define(function(){
 				   .attr("data-link", this.modulesMenu[ind].link)
 				   .text(this.modulesMenu[ind].link);
 			}
+
+
 		},
 		displayLeftMenu: function(){
 			var $nav = $("#" + App.ID.leftMenu + " nav"),
 				link = $("#" + App.ID.topMenu + " li.selected a").attr("data-link");
+
 			$nav.empty();
 			for (ind in this.modulesMenu)
 			{
@@ -297,7 +329,17 @@ define(function(){
 					displayMMItems($nav, this.modulesMenu[ind].structure);
 					break;
 				}
-			}	
+			}
+            $('#'+App.ID.leftMenu).find('li').first().children().find('li').first().addClass('selected');
+            $(App.ID.createBtnHolder).css('display','inline');
+            $(App.ID.createBtn).on('click',function(){
+                App.Modules.UI.displayCreateForm();
+            });
+            //App.Modules.UI.initContentType($('#'+App.ID.leftMenu).find('li').first().children().find('li').first().find('a').attr('data-link'));
+            var link = $('#'+App.ID.leftMenu).find('li').first().children().find('li').first().find('a').attr('data-link');
+            App.Modules.UI.initContentType(link);
+            App.Modules.UI.initContentView('list');
+            App.Modules.Communication.getList(link.toLowerCase(), link.toLowerCase()=='tasks' ? 'gunttview' : null);
 		},
 		displayContent: function(){			
 			var url = App.URL.templateFolder 

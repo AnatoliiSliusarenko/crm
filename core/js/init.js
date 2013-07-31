@@ -2,7 +2,7 @@
 var App = App || 
 {
 	Server: {
-		ip: "192.168.88.109",
+		ip: "192.168.88.45",
 		port: "8088"
 	},
 	ID: {
@@ -23,8 +23,14 @@ var App = App ||
 		userPanel: "loginPanel",
 		changeCVClass: "changeContentView",
 		changeCIClass: "changeContentIndex",
-        createBtn:"#top-bar-createBtn"
-
+        createBtn:"#top-bar-createBtn",
+        discardBtn:"#top-bar-discardBtn",
+        saveBtn:"#top-bar-saveBtn",
+        saveDiscardHolder:"#saveDiscardHolder",
+        createBtnHolder:"#createBtnHolder",
+        projectForm:"#createProjectForm",
+        privacyDD:"#privacyDD",
+        managerSelect: "#projectManagerDD"
 	},
 	URL: {
 		login: "core/html/login.html",
