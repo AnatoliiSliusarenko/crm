@@ -1,8 +1,10 @@
 define(function(){
 	function loadContent(destID, resURL, resID, callback){
-		$("#" + destID).empty();
-		$("#" + destID).load(resURL + " #" + resID, callback);
+        $("#" + destID).empty();
+        $("#" + destID).load(resURL + " #" + resID, callback);
 	}
+
+
     function createGanttChart(projectArray, withTasks){
         var ganttChartControl = new GanttChart();
         //chart settings
@@ -69,7 +71,6 @@ define(function(){
 		}
 	}
 
-
 	
 	function displayMMItems(destItem, childItems){
         var $ul = destItem.append("<ul></ul>").find("ul");
@@ -99,7 +100,9 @@ define(function(){
                         App.Modules.UI.initContentType(link);
                         //When click the right
                         App.Modules.UI.initContentView('list');
-                        App.Modules.Communication.getList(link.toLowerCase(), link.toLowerCase()=='tasks' ? 'gunttview' : null);
+                        //App.Modules.Communication.getList(link.toLowerCase(), link.toLowerCase()=='tasks' ? 'gunttview' : null);
+                        var funcName = "get"+link;
+                        App.Modules.Communication[funcName]();
                         return false;
                     });
             }
@@ -123,6 +126,7 @@ define(function(){
 		modulesMenu: [],
 		Content: {
 			data: [],
+            tempData:[],
 			type: "users",
 			view: "list",
 			index: null,
@@ -134,6 +138,9 @@ define(function(){
 
         initCreateFormData:function(data){
              this.CreateFormData.users = App.Libs.KO.observableArray(data);
+        },
+        initTempData:function(data){
+            this.Content.tempData = data;
         },
 
 		initContentData: function(data){
@@ -157,27 +164,25 @@ define(function(){
 			this.Content.view = view;
 		},
         displayCreateForm:function(){
-            var type = App.Modules.UI.Content.type;
-            var url = App.URL.templateFolder + type.toLowerCase() + "/" + "create" + type.toLowerCase() + ".html";
-            loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
-                App.Modules.Communication.getUsersForDd();
 
+            console.log("DIsplayCreateForm");
+            var type = App.Modules.UI.Content.type.toLowerCase();
+            var url = App.URL.templateFolder + type + "/" + "create" + type + ".html";
+            loadContent(App.ID.contentHolder, url, App.ID.content, function(){
+                App.Modules.Communication.getUsersForDd();
                 $(App.ID.managerSelect).on('click',function(){
                     App.Modules.Communication.getUsersForDd();
-                    App.Libs.KO.cleanNode(document.getElementById("projectManagerDD"));
-                    App.Libs.KO.applyBindings(App.Modules.UI.CreateFormData, document.getElementById("projectManagerDD"));
+                    App.Libs.KO.cleanNode($(App.ID.managerSelect)[0]);
+                    App.Libs.KO.applyBindings(App.Modules.UI.CreateFormData, $(App.ID.managerSelect)[0]);
                 });
 
                 $(App.ID.createBtnHolder).css('display','none');
-                $(App.ID.saveDiscardHolder).css('display','inline');
+                $(App.ID.saveDiscardHolder).css('display','block');
                 $(App.ID.discardBtn).on('click',function(){
-                    $(App.ID.createBtnHolder).css('display','inline');
+                    $(App.ID.createBtnHolder).css('display','block');
                     $(App.ID.saveDiscardHolder).css('display','none');
 
                 });
-
-
-
                 $('#createProjectForm').on('submit',function(e){
                     e.preventDefault();
                     var data = {
@@ -236,7 +241,7 @@ define(function(){
 			$("#" + App.ID.loginForm + " #response").empty().append(message);
 		},
 		initMainPage: function(){
-			loadContent(App.ID.pageHolder, App.URL.main, App.ID.contentResource, function(){	
+			loadContent(App.ID.pageHolder, App.URL.main, App.ID.contentResource, function(){
 				$(App.ID.saveDiscardHolder).css('display', 'none');
 				$(App.ID.createBtnHolder).css('display', 'none');
 
@@ -254,8 +259,13 @@ define(function(){
 
                     App.Modules.UI.initContentView(viewType);
                     var type = App.Modules.UI.Content.type;
-                    App.Modules.Communication.getList(type.toLowerCase(), type.toLowerCase()=='tasks' ? 'gunttview' : null);
-					//App.Modules.UI.displayContent();
+                    var functionName = "convert"+type;
+                    if(typeof(App.Modules.Utils[functionName]) == "function")
+                    {
+                        App.Modules.UI.initContentData(App.Modules.Utils[functionName](App.Modules.UI.Content.tempData));
+                        App.Modules.UI.displayContent();
+                    }
+
 					App.Modules.UI.displayViewPanel();
 					
 					return false;
@@ -294,7 +304,11 @@ define(function(){
 							
 				$li.on('click', function(){
 					var link = $(this).find('a').attr('data-link');
-                    //link.toLowerCase() == 'project' ? $(App.ID.createDiscardHolder).css('display','inline') : $(App.ID.createDiscardHolder).css('display','none');
+                    link.toLowerCase() == 'project' ? $(App.ID.createBtnHolder).css('display','block') : $(App.ID.createBtnHolder).css('display','none');
+                    if(link.toLowerCase()=='project'){
+                        $(App.ID.createBtn).on('click',App.Modules.UI.displayCreateForm);
+                        //$(App.ID.createBtn).unbind('click');
+                    }
 					for (ind in App.Modules.UI.modulesMenu)
 					{
 						if (App.Modules.UI.modulesMenu[ind].link == link)
@@ -318,7 +332,8 @@ define(function(){
 
 		},
 		displayLeftMenu: function(){
-			var $nav = $("#" + App.ID.leftMenu + " nav"),
+			console.log("Display LEft Menu");
+            var $nav = $("#" + App.ID.leftMenu + " nav"),
 				link = $("#" + App.ID.topMenu + " li.selected a").attr("data-link");
 
 			$nav.empty();
@@ -330,40 +345,35 @@ define(function(){
 					break;
 				}
 			}
-            $('#'+App.ID.leftMenu).find('li').first().children().find('li').first().addClass('selected');
-            $(App.ID.createBtnHolder).css('display','inline');
-            $(App.ID.createBtn).on('click',function(){
-                App.Modules.UI.displayCreateForm();
-            });
-            //App.Modules.UI.initContentType($('#'+App.ID.leftMenu).find('li').first().children().find('li').first().find('a').attr('data-link'));
-            var link = $('#'+App.ID.leftMenu).find('li').first().children().find('li').first().find('a').attr('data-link');
-            App.Modules.UI.initContentType(link);
+            //make first li element selected
+            var type = $('#'+App.ID.leftMenu).find('li').first().children().find('li').first().addClass('selected').find('a').attr('data-link');
+            App.Modules.UI.initContentType(type);
             App.Modules.UI.initContentView('list');
-            App.Modules.Communication.getList(link.toLowerCase(), link.toLowerCase()=='tasks' ? 'gunttview' : null);
+            var funcName = 'get' + type;
+            if(typeof(App.Modules.Communication[funcName]) == 'function'){
+                App.Modules.Communication[funcName]();
+            }
 		},
 		displayContent: function(){			
 			var url = App.URL.templateFolder 
 					+ this.Content.type.toLowerCase() + "/"
 					+ this.Content.view + ".html";
 			
-			loadContent(App.ID.contentHolder, url, App.ID.contentResource, function(){
+			loadContent(App.ID.contentHolder, url, App.ID.content, function(){
                 if(App.Modules.UI.Content.view == "gantt"){
-                    var projectArray = App.Modules.UI.Content.data.peek();
+                    var projectArray = App.Modules.UI.Content.tempData;
                     if(!projectArray || projectArray.length == 0  ){
                         return;
                     }
                     var withTasks = App.Modules.UI.Content.type.toLowerCase() == "projects" ? false : true;
 
                     var ganttChart = createGanttChart(projectArray, withTasks);
-                    ganttChart.create(App.ID.ganttViewHolder)
+                    ganttChart.create(App.ID.ganttViewHolder);
                 }
                 else {
-                    /*if(App.Modules.UI.Content.type.toLowerCase() == "tasks"){
-                        App.Modules.UI.initContentData(App.Modules.UI.Content.data.peek());
-                    }*/
                     var type = App.Modules.UI.Content.type;
-                    var data = App.Modules.UI.Content.data.peek();
-                    var functionName = type + "Convert";
+                    var data = App.Modules.UI.Content.tempData;
+                    var functionName = "convert"+type;
                     if(typeof(App.Modules.Utils[functionName]) == "function")
                     {
                         App.Modules.UI.initContentData(App.Modules.Utils[functionName](data));

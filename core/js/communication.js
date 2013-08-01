@@ -110,6 +110,50 @@ define(function(){
             	}		
 			});
 
+            this.socket.on('responseGetProjects', function(response){
+                switch(response.result.status)
+                {
+                    case "0":
+                    {
+                        console.log('responseGetProjects OK');
+                        App.Modules.UI.initTempData(response.data);
+                        App.Modules.UI.displayContent();
+                        break;
+                    }
+                    case "4":
+                        console.log(response.result.description);
+                        App.Modules.UI.initLoginPage();
+                        break;
+                    default:
+                    {
+                        console.log('responseGetList BAD');
+                        break;
+                    }
+                }
+            });
+
+            this.socket.on('responseGetTasks', function(response){
+                switch(response.result.status)
+                {
+                    case "0":
+                    {
+                        console.log('responseGetTasks OK');
+                        App.Modules.UI.initTempData(response.data);
+                        App.Modules.UI.displayContent();
+                        break;
+                    }
+                    case "4":
+                        console.log(response.result.description);
+                        App.Modules.UI.initLoginPage();
+                        break;
+                    default:
+                    {
+                        console.log('responseGetList BAD');
+                        break;
+                    }
+                }
+            });
+
             this.socket.on('responseCreate', function(response){
                 switch(response.result.status)
                 {
@@ -146,16 +190,8 @@ define(function(){
                             App.Modules.UI.initCreateFormData(response.data);
                             App.Libs.KO.cleanNode(document.getElementById("projectManagerDD"));
                             App.Libs.KO.applyBindings(App.Modules.UI.CreateFormData, document.getElementById("projectManagerDD"));
-                        }else{
-
                         }
 
-
-
-                        //console.log(App.Modules.UI.Content.data.peek());
-                        //App.Modules.UI.initContentType('...');
-                        //App.Modules.UI.initContentView('...');
-                        //App.Modules.UI.displayContent();
                         break;
                     }
                     case "4":
@@ -172,8 +208,37 @@ define(function(){
             });
 		},
 
+        getProjects: function(){
+            console.log('GET PROJECTS');
+            var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+                uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+
+            if ((!hash) || (!uid))
+            {
+                App.Modules.UI.initLoginPage();
+                return;
+            }
+
+            this.socket.emit('getProjects', {"hash": hash, "uid": uid, 'mid':39});
+        },
+
+        getTasks: function(){
+            console.log('GET TASKS');
+            var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+                uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+
+            if ((!hash) || (!uid))
+            {
+                App.Modules.UI.initLoginPage();
+                return;
+            }
+
+            this.socket.emit('getTasks', {"hash": hash, "uid": uid, 'mid':39});
+        },
+
         //get users for drop down list [{uname:'user1',uid:'25252'}]
         getUsersForDd: function(){
+            console.log('GETUSERSFORDD');
             var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
                 uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
 

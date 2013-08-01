@@ -24,15 +24,15 @@ define(function(){
     };
     return {
         calculateHours:calculateHours,
-        TasksConvert:  function (data){
+        convertTasks:  function (data){
             var tasks = [];
             data.forEach(function(project){
                 if(project.task.tasks.length > 0){
                     project.task.tasks.forEach(function(task){
                         tasks.push({
                             'summary':task.summary,
-                            'projectname':project.projectname,
-                            'assignedto':task.assignedto.uname,
+                            'projectname':project.projectname  || 'Unknown project',
+                            'assignedto':task.assignedto.uname || 'Unknown name',
                             'stage':'Unknown Stage',
                             'StartDate': new Date(task.extrainfo.StartDate).format("dd/mm/yy hh:mm:ss"),
                             'EndDate': new Date(task.extrainfo.EndDate).format("dd/mm/yy hh:mm:ss"),
@@ -44,7 +44,7 @@ define(function(){
             });
             return tasks;
         },
-        ProjectsConvert:  function (data){
+        convertProjects:  function (data){
             var projects = [];
             data.forEach(function(project){
                 projects.push({

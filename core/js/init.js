@@ -2,7 +2,7 @@
 var App = App || 
 {
 	Server: {
-		ip: "192.168.88.45",
+		ip: "192.168.88.109",
 		port: "8088"
 	},
 	ID: {
@@ -10,6 +10,7 @@ var App = App ||
 		leftMenu: "leftmenu-holder",
 		pageHolder: "body",
 		contentResource: "wrapper",
+        content:"content",
 		loginForm: "loginForm",
 		contentHolder: "content-holder",
 		viewPanel: "top-bar",
