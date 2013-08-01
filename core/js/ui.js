@@ -304,10 +304,12 @@ define(function(){
 							
 				$li.on('click', function(){
 					var link = $(this).find('a').attr('data-link');
-                    link.toLowerCase() == 'project' ? $(App.ID.createBtnHolder).css('display','block') : $(App.ID.createBtnHolder).css('display','none');
                     if(link.toLowerCase()=='project'){
                         $(App.ID.createBtn).on('click',App.Modules.UI.displayCreateForm);
-                        //$(App.ID.createBtn).unbind('click');
+                        $(App.ID.createBtnHolder).css('display','block');
+                        $(App.ID.saveDiscardHolder).css('display','none');
+                    }else{
+                        $(App.ID.createBtnHolder).css('display','none');
                     }
 					for (ind in App.Modules.UI.modulesMenu)
 					{

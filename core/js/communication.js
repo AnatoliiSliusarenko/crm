@@ -84,31 +84,7 @@ define(function(){
             		}
             	}		
 			});
-			
-			this.socket.on('responseGetList', function(response){
-				switch(response.result.status)
-            	{
-            		case "0":
-            		{
-            			console.log('responseGetList OK');
-                        App.Modules.UI.initContentData(response.data);
-            			//console.log(App.Modules.UI.Content.data.peek());
-            			//App.Modules.UI.initContentType('...');
-            			//App.Modules.UI.initContentView('...');
-            			App.Modules.UI.displayContent();
-            			break;
-            		}
-                    case "4":
-                        console.log(response.result.description);
-                        App.Modules.UI.initLoginPage();
-                        break;
-            		default:
-            		{
-            			console.log('responseGetList BAD');
-            			break;
-            		}
-            	}		
-			});
+
 
             this.socket.on('responseGetProjects', function(response){
                 switch(response.result.status)
@@ -206,19 +182,54 @@ define(function(){
                     }
                 }
             });
+
+            this.socket.on('responseGetProjectsForDd', function(response){
+                switch(response.result.status)
+                {
+                    case "0":
+                    {
+                        console.log('usersForDD loaded');
+                        if(response.data.length> 0){
+                            App.Modules.UI.initCreateFormData(response.data);
+                            App.Libs.KO.cleanNode($(App.ID.managerSelect)[0]);
+                            App.Libs.KO.applyBindings(App.Modules.UI.CreateFormData, $(App.ID.managerSelect)[0]);
+                        }
+                        break;
+                    }
+                    case "4":
+                        console.log(response.result.description);
+                        App.Modules.UI.initLoginPage();
+                        break;
+                    default:
+                    {
+                        console.log('responseCreate' + response.result.description);
+
+                        break;
+                    }
+                }
+            });
 		},
 
         getProjects: function(){
             console.log('GET PROJECTS');
             var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
                 uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
-
             if ((!hash) || (!uid))
             {
                 App.Modules.UI.initLoginPage();
                 return;
             }
-
+            this.socket.emit('getProjects', {"hash": hash, "uid": uid, 'mid':39});
+        },
+        getProjectsForDd:function(){
+            console.log('GET PROJECTSFORDD');
+            var hash = App.Modules.LocalStorage.getFromLocalStorage("hash"),
+                uid = App.Modules.LocalStorage.getFromLocalStorage("uid");
+            if ((!hash) || (!uid))
+            {
+                App.Modules.UI.initLoginPage();
+                return;
+            }
             this.socket.emit('getProjects', {"hash": hash, "uid": uid, 'mid':39});
         },
 
