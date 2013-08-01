@@ -415,7 +415,8 @@ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 .form-holder{
 background:url(../images/form_sheetbg.png);
-padding-bottom:20px;
+padding:20px 0px;
+border-bottom:1px solid #dddddd;
 }
 div.form h1{
 font-family: "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
@@ -424,7 +425,7 @@ font-size: 24px !important;
 text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 margin-bottom:24px;
 }
-div.form p{
+div.form p,div.form label{
 font-family: "Lucida Grande", Helvetica, Verdana, Arial, sans-serif;
 color: #4c4c4c;
 font-size: 13px;
@@ -433,11 +434,42 @@ text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 div.form span{
 padding:3px 8px;
 }
+input, textarea, select {
+	padding: 2px 4px;
+	border: 1px solid #cccccc;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	background: white;
+}
+.input-block{
+	display:block;
+	height:40px;
+}
+.input-block > select{
+	margin-left:10px;
+}
+#createBtnHolder, #saveDiscardHolder{
+	float:left;
+	margin-top:36px;
+	paddin-left:10px;
+}
+.input-title{
+	font-size:26px;
+	background:#CEDAE7;
+	display:block;
+	width:100%;
+	padding:0 7px;
+}
+.input-block > label{
+height:100%;
+line-height:23px;
+}
 .mgb20{
 margin-bottom:20px;
 }
 .border-right{
-border-right:1px solid gray; 
+border-right:1px solid #dddddd; 
 border-spacing: 2px;
 }
 .bold{
