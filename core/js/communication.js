@@ -218,7 +218,7 @@ define(function(){
                 App.Modules.UI.initLoginPage();
                 return;
             }
-            this.socket.emit('getProjects', {"hash": hash, "_id": _id, 'mid':39});
+            this.socket.emit('getProjects', {"hash": hash, "uid": _id, 'mid':39});
         },
         getProjectsForDd:function(){
             console.log('GET PROJECTSFORDD');
@@ -229,7 +229,7 @@ define(function(){
                 App.Modules.UI.initLoginPage();
                 return;
             }
-            this.socket.emit('getProjects', {"hash": hash, "_id": _id, 'mid':39});
+            this.socket.emit('getProjects', {"hash": hash, "uid": _id, 'mid':39});
         },
 
         getTasks: function(){
@@ -243,7 +243,7 @@ define(function(){
                 return;
             }
 
-            this.socket.emit('getTasks', {"hash": hash, "_id": _id, 'mid':39});
+            this.socket.emit('getTasks', {"hash": hash, "uid": _id, 'mid':39});
         },
 
         //get users for drop down list [{uname:'user1',_id:'25252'}]
@@ -257,7 +257,7 @@ define(function(){
                 App.Modules.UI.initLoginPage();
                 return;
             }
-            this.socket.emit('getUsersForDd', {"hash": hash, "_id": _id, 'mid':39});
+            this.socket.emit('getUsersForDd', {"hash": hash, "uid": _id, 'mid':39});
         },
         getAccountsForUsers: function(){
             console.log('GETAccountsForUsers');
@@ -268,7 +268,7 @@ define(function(){
                 App.Modules.UI.initLoginPage();
                 return;
             }
-            this.socket.emit('getAccountsForUsers', {"hash": hash, "_id": _id, 'mid':39});
+            this.socket.emit('getAccountsForUsers', {"hash": hash, "uid": _id, 'mid':39});
         },
         login: function(login, password){
             this.socket.emit('login', {"ulogin": login, "upass": password});
