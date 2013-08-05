@@ -11,18 +11,22 @@
                 <tr>
                     <th>Login</th>
                     <th>e-mail</th>
+                    <th>Language</th>
+                    <th>Date</th>
                 </tr>
             </thead>
               <tbody data-bind="foreach:data">
                 <tr>
                     <td data-bind="text: ulogin"></td>
                     <td data-bind="text: uemail"></td>
+                    <td data-bind="text: ulang"></td>
+                    <td data-bind="text: ucreated"></td>
                 </tr>
             </tbody>
+            </table>
 		<!-- <div data-bind="foreach: data">
-			
-		</div> -->
 		</div>
+		</div> -->
 	</div>	
 </body>
 </html>

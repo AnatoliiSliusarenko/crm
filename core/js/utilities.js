@@ -61,6 +61,18 @@ define(function(){
                 });
             });
             return projects;
+        },
+        convertAccountsForUsers:  function (data){
+            var accountsforusers = [];
+            data.forEach(function(accountsforuser){
+            	accountsforusers.push({
+                    'ulogin':accountsforuser.ulogin,
+                    'uemail':accountsforuser.uemail || 'No e-mail',
+                    'ulang':accountsforuser.ulang || 'Unknown',
+                    'ucreated': accountsforuser.ucreated || 'no data'
+                });
+            });
+            return accountsforusers;
         }
 
     }

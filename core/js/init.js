@@ -10,7 +10,7 @@ var App = App ||
 		leftMenu: "leftmenu-holder",
 		pageHolder: "body",
 		contentResource: "wrapper",
-        content:"content",
+		content:"content",
 		loginForm: "loginForm",
 		contentHolder: "content-holder",
 		viewPanel: "top-bar",
@@ -18,20 +18,20 @@ var App = App ||
 		rightBtn: "rightBtn",
 		listBtn: "listBtn",
 		thumbBtn: "thumbBtn",
-        ganttBtn: "ganttBtn",
-        ganttViewHolder: "GanttViewHolder",
+		ganttBtn: "ganttBtn",
+		ganttViewHolder: "GanttViewHolder",
 		formBtn: "formBtn",
 		userPanel: "loginPanel",
 		changeCVClass: "changeContentView",
 		changeCIClass: "changeContentIndex",
-        createBtn:"#top-bar-createBtn",
-        discardBtn:"#top-bar-discardBtn",
-        saveBtn:"#top-bar-saveBtn",
-        saveDiscardHolder:"#saveDiscardHolder",
-        createBtnHolder:"#createBtnHolder",
-        projectForm:"#createProjectForm",
-        privacyDD:"#privacyDD",
-        managerSelect: "#projectManagerDD"
+		createBtn:"#top-bar-createBtn",
+		discardBtn:"#top-bar-discardBtn",
+		saveBtn:"#top-bar-saveBtn",
+		saveDiscardHolder:"#saveDiscardHolder",
+		createBtnHolder:"#createBtnHolder",
+		projectForm:"#createProjectForm",
+		privacyDD:"#privacyDD",
+		managerSelect: "#projectManagerDD"
 	},
 	URL: {
 		login: "core/html/login.html",
@@ -47,8 +47,8 @@ var App = App ||
 		UI: {},
 		LocalStorage: {},
 		Communication: {},
-        Utils: {},
-        Validation: {}
+		Utils: {},
+		Validation: {}
 	},
 	InitApp: function(){
 		this.Modules.Communication.initConnection();
@@ -60,10 +60,8 @@ var App = App ||
 //include modules and libraries
 requirejs(["classes", "ui", "localstorage", "../../libraries/socket.io", "../../libraries/knockout-2.3.0", "communication", "utilities", "validation"], function(classesContent, uiContent, localstorageContent, ioContent, knockoutContent, communicationContent, utilitiesContent, validationContent){
 	App.Classes = classesContent;
-
 	App.Libs.IO = ioContent;
 	App.Libs.KO = knockoutContent;
-
 	App.Modules.UI = uiContent;
 	App.Modules.LocalStorage = localstorageContent;
 	App.Modules.Communication = communicationContent;

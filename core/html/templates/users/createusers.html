@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<div id="content">
+      <div class="form-holder">
+      	<div class=form>
+          <form method="post" action="" id="createProjectForm">
+              <legend>Create Task</legend>
+              <fieldset>
+                  <div>
+                      <label for="userNameInput">User Name</label>
+                      <input type="text" name="username" id="userNameInput" required/>
+                  </div>
+                  <div>
+                      <label for="privacyDD">Privacy/Visibility</label>
+                      <select id="privacyDD">
+                          <option>All Users</option>
+                          <option>Portal Users and Employees</option>
+                          <option>Employees Only</option>
+                          <option>Followers Only</option>
+                      </select>
+                  </div>
+
+
+                  <div>
+                      <label for="projectManagerDD">Project Manager</label>
+                      <select data-bind="options: users, optionsText: 'uname', optionsValue:'_id'" id="projectManagerDD">
+
+                      </select>
+                  </div>
+              </fieldset>
+
+
+              <input type="submit" class="submit" value="Submit"/>
+          </form>
+      </div>
+</div>
+</div>
+</body>
+</html>
